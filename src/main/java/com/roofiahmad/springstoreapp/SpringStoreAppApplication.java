@@ -9,8 +9,6 @@ public class SpringStoreAppApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(SpringStoreAppApplication.class, args);
-		var orderService = context.getBean(OrderService.class);
-		orderService.placeOrder();
 	}
 
 }
