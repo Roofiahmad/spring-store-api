@@ -33,17 +33,8 @@ public class User {
     @Builder.Default
     private List<Address> addresses = new ArrayList<>();
 
-//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Profile profile;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_tag",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id")
-    )
-    @Builder.Default
-    private Set<Tag> tags = new HashSet<>();
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Profile profile;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -64,25 +55,18 @@ public class User {
         address.setUser(null);
     }
 
-    public void addTag(Tag tag) {
-       tags.add(tag);
-       tag.getUsers().add(this);
+
+
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+        profile.setUser(this);
     }
 
-    public void removeTag(Tag tag) {
-        tags.remove(tag);
-        tag.getUsers().remove(this);
+    public void removeProfile(Profile profile) {
+        this.profile = null;
+        profile.setUser(null);
     }
-
-//    public void setProfile(Profile profile) {
-//        this.profile = profile;
-//        profile.setUser(this);
-//    }
-//
-//    public void removeProfile(Profile profile) {
-//        this.profile = null;
-//        profile.setUser(null);
-//    }
 
     public void addWishlist(Product product) {
         wishlist.add(product);

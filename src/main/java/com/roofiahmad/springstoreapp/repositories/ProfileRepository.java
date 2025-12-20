@@ -1,4 +1,4 @@
-package com.roofiahmad.springstoreapp.services;
+package com.roofiahmad.springstoreapp.repositories;
 
 import com.roofiahmad.springstoreapp.entities.Profile;
 import org.springframework.data.repository.CrudRepository;
