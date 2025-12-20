@@ -2,7 +2,6 @@ package com.roofiahmad.springstoreapp.services;
 
 import com.roofiahmad.springstoreapp.entities.Address;
 import com.roofiahmad.springstoreapp.entities.Product;
-import com.roofiahmad.springstoreapp.entities.Profile;
 import com.roofiahmad.springstoreapp.entities.User;
 import com.roofiahmad.springstoreapp.repositories.AddressRepository;
 import com.roofiahmad.springstoreapp.repositories.CategoryRepository;
@@ -49,10 +48,10 @@ public class UserService {
     public void createFullUser() {
         var user = User.builder().name("Sherlock Holmes").password("dududu").email("sherlock@email.com").build();
         var address = Address.builder().street("212 Baker Street").city("London").state("UK").zip("666666").build();
-        var profile = Profile.builder().bio("famous detective").loyaltyPoints(200).build();
+//        var profile = Profile.builder().bio("famous detective").loyaltyPoints(200).build();
 
         user.addAddress(address);
-        user.setProfile(profile);
+//        user.setProfile(profile);
         userRepository.save(user);
 
     }
@@ -74,5 +73,14 @@ public class UserService {
         } else {
             System.out.println("Product not found.");
         }
+    }
+
+    @Transactional
+    public void fetchUsers(){
+       var users = userRepository.findAllWithAddresses();
+       users.forEach(u -> {
+           System.out.println(u);
+           System.out.println(u.getAddresses());
+       });
     }
 }
