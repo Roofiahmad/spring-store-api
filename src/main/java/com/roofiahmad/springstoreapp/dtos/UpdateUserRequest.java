@@ -3,8 +3,7 @@ package com.roofiahmad.springstoreapp.dtos;
 import lombok.Data;
 
 @Data
-public class UserDto {
-    private Long id;
+public class UpdateUserRequest {
     private String name;
     private String email;
 }

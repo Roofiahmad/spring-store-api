@@ -3,8 +3,10 @@ package com.roofiahmad.springstoreapp.dtos;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class ProductDto {
     private Long id;
     private String name;
-    private String email;
+    private String description;
+    private Double price;
+    private Byte categoryId;
 }
