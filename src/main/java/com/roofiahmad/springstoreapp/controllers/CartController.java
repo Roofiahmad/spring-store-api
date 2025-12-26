@@ -6,10 +6,10 @@ import com.roofiahmad.springstoreapp.dtos.CartItemDto;
 import com.roofiahmad.springstoreapp.dtos.UpdateCartItemRequest;
 import com.roofiahmad.springstoreapp.exceptions.CartNotFoundException;
 import com.roofiahmad.springstoreapp.exceptions.ProductNotFoundException;
-import com.roofiahmad.springstoreapp.mappers.CartMapper;
-import com.roofiahmad.springstoreapp.repositories.CartRepository;
-import com.roofiahmad.springstoreapp.repositories.ProductRepository;
 import com.roofiahmad.springstoreapp.services.CartService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,11 +23,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/carts")
+@Tag(name = "Carts")
 public class CartController {
-
-    private final CartRepository cartRepository;
-    private final CartMapper cartMapper;
-    private final ProductRepository productRepository;
     private final CartService cartService;
 
     @PostMapping
@@ -39,23 +36,23 @@ public class CartController {
     }
 
     @PostMapping("/{cartId}/items")
-    public ResponseEntity<CartItemDto> addToCart(@PathVariable UUID cartId, @RequestBody AddItemToCartRequest request) {
-
-        var cartItemDto = cartService.addToCart(cartId, request.getProductId());
-        return ResponseEntity.ok(cartItemDto);
+    @Operation(summary = "Add a product to the cart. ")
+    public ResponseEntity<CartItemDto> addToCart(
+            @Parameter(description = "The ID of the cart.")
+            @PathVariable UUID cartId, @RequestBody AddItemToCartRequest request) {
+       var cartItemDto = cartService.addToCart(cartId, request.getProductId());
+       return ResponseEntity.status(HttpStatus.CREATED).body(cartItemDto);
     }
 
 
     @GetMapping("/{cartId}")
-    public ResponseEntity<CartDto> getCart(@PathVariable UUID cartId) {
-        var cartDto = cartService.getCart(cartId);
-        return ResponseEntity.ok(cartDto);
+    public CartDto getCart(@PathVariable UUID cartId) {
+        return cartService.getCart(cartId);
     }
 
     @PutMapping("/{cartId}/items/{productId}")
-    public ResponseEntity<CartItemDto> updateCart(@PathVariable("cartId") UUID cartId, @PathVariable("productId") Long productId,@Valid @RequestBody UpdateCartItemRequest request) {
-        var cartItemDto = cartService.updateCart(cartId, productId, request.getQuantity());
-        return ResponseEntity.ok(cartItemDto);
+    public CartItemDto updateCart(@PathVariable("cartId") UUID cartId, @PathVariable("productId") Long productId,@Valid @RequestBody UpdateCartItemRequest request) {
+        return cartService.updateCart(cartId, productId, request.getQuantity());
     }
 
     @DeleteMapping("/{cartId}/items/{productId}")
