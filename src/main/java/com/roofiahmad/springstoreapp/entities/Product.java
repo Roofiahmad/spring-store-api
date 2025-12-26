@@ -3,6 +3,8 @@ package com.roofiahmad.springstoreapp.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -23,7 +25,7 @@ public class Product {
     private String description;
 
     @Column(name = "price")
-    private float price;
+    private BigDecimal price;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
