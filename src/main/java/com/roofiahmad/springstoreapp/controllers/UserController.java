@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -26,14 +27,13 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping()
     public Iterable<UserDto> getAllUsers(
             @RequestHeader(required = false, defaultValue = "", name = "x-auth-token") Integer authToken,
            @RequestParam(required = false, defaultValue = "", name = "sort") String sort
     ) {
-
-        System.out.println(authToken);
 
         if(!Set.of("name", "email").contains(sort))
             sort = "name";
@@ -61,6 +61,7 @@ public class UserController {
         }
 
        var userEntity = userMapper.toEntity(request);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userEntity = userRepository.save(userEntity);
         var userDto = userMapper.toDto(userEntity);
 
