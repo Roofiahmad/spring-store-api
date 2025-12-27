@@ -1,9 +1,6 @@
 package com.roofiahmad.springstoreapp.controllers;
 
-import com.roofiahmad.springstoreapp.dtos.AddItemToCartRequest;
-import com.roofiahmad.springstoreapp.dtos.CartDto;
-import com.roofiahmad.springstoreapp.dtos.CartItemDto;
-import com.roofiahmad.springstoreapp.dtos.UpdateCartItemRequest;
+import com.roofiahmad.springstoreapp.dtos.*;
 import com.roofiahmad.springstoreapp.exceptions.CartNotFoundException;
 import com.roofiahmad.springstoreapp.exceptions.ProductNotFoundException;
 import com.roofiahmad.springstoreapp.services.CartService;
@@ -17,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -72,12 +68,12 @@ public class CartController {
     }
 
     @ExceptionHandler(CartNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleCartNotFound(){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Cart not found"));
+    public ResponseEntity<ErrorDto> handleCartNotFound(){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto("Cart not found"));
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleProductNotFound(){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Product not found in the cart"));
+    public ResponseEntity<ErrorDto> handleProductNotFound(){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto("Product not found in the cart"));
     }
 }

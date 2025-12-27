@@ -63,4 +63,8 @@ public class Cart {
     public void clear() {
         items.clear();
     }
+
+    public Boolean isEmpty() {
+        return items.isEmpty();
+    }
 }
