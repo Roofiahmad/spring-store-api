@@ -62,6 +62,7 @@ public class UserController {
 
        var userEntity = userMapper.toEntity(request);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+//        userEntity.setRole(Role.ADMIN);
         userEntity = userRepository.save(userEntity);
         var userDto = userMapper.toDto(userEntity);
 
