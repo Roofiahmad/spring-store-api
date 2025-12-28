@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Successful</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+<div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+    <div class="flex justify-center mb-6">
+        <div class="rounded-full bg-green-100 p-4">
+            <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+    </div>
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-2">Thank You!</h1>
+    <p class="text-gray-600 mb-6">Your payment has been successfully processed.</p>
+
+    <div class="bg-gray-50 rounded-md p-4 mb-6 text-left border border-gray-200">
+        <div class="flex justify-between mb-2">
+            <span class="text-gray-500">Order Number:</span>
+            <span class="font-semibold text-gray-800" th:text="${orderNumber}">ORD-12345</span>
+        </div>
+        <div class="flex justify-between mb-2">
+            <span class="text-gray-500">Amount Paid:</span>
+            <span class="font-semibold text-gray-800" th:text="${totalAmount}">$0.00</span>
+        </div>
+        <div class="flex justify-between">
+            <span class="text-gray-500">Status:</span>
+            <span class="px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full">Completed</span>
+        </div>
+    </div>
+
+    <p class="text-sm text-gray-500 mb-8">
+        A confirmation email has been sent to your inbox.
+    </p>
+
+    <div class="space-y-3">
+        <a href="/orders" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition duration-200">
+            View My Orders
+        </a>
+        <a href="/" class="block w-full text-blue-600 hover:text-blue-800 font-medium py-2">
+            Continue Shopping
+        </a>
+    </div>
+</div>
+</body>
+</html>

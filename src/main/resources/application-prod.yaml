@@ -1,4 +1,4 @@
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL}
-websiteUrl: http://localhost:4242
+websiteUrl: https://spring-store-api-production-8479.up.railway.app

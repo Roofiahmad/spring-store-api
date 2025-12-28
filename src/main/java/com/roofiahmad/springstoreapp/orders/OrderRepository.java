@@ -16,4 +16,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @EntityGraph(attributePaths = {"items.product"})
     @Query("SELECT o FROM Order o WHERE o.id = :orderId")
     public Optional<Order> getOneOrderWithItems(@Param("orderId") Long orderId);
+
+    public Optional<Order> getOneOrderById(Long orderId);
 }
