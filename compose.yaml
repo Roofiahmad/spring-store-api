@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    container_name: spring_app
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - APP_JWT_SECRET_KEY=${APP_JWT_SECRET_KEY}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET_KEY=${STRIPE_WEBHOOK_SECRET_KEY}
+      - SERVER_PORT=8000
