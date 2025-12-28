@@ -11,6 +11,8 @@ public class PaymentSecurityRules implements SecurityRules {
 
     @Override
     public void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
-        registry.requestMatchers(HttpMethod.POST,"/checkout/webhook").permitAll();
+        registry.requestMatchers(HttpMethod.POST,"/checkout/webhook").permitAll()
+                .requestMatchers(HttpMethod.GET,"/checkout-success").permitAll()
+                .requestMatchers(HttpMethod.GET,"/checkout-cancel").permitAll();
     }
 }

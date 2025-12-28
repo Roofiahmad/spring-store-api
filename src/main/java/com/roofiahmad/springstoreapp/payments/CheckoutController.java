@@ -1,17 +1,17 @@
 package com.roofiahmad.springstoreapp.payments;
 
+import com.roofiahmad.springstoreapp.auth.UserPrincipal;
 import com.roofiahmad.springstoreapp.common.ErrorDto;
 import com.roofiahmad.springstoreapp.orders.CartEmptyException;
 import com.roofiahmad.springstoreapp.orders.CartNotFoundException;
 import com.roofiahmad.springstoreapp.orders.OrderRepository;
-import com.roofiahmad.springstoreapp.auth.UserPrincipal;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,9 +24,6 @@ public class CheckoutController {
     private final CheckoutService checkoutService;
     private final OrderRepository orderRepository;
 
-    @Value("${stripe.webhookSecretKey}")
-    private  String webhookSecretKey;
-
     @PostMapping
     public CheckoutResponse checkout(@AuthenticationPrincipal UserPrincipal principal, @Valid @RequestBody CheckoutRequest request) {
            return checkoutService.checkout(request, principal);
@@ -35,6 +32,23 @@ public class CheckoutController {
     @PostMapping("/webhook")
     public void handleWebHook(@RequestHeader Map<String, String> headers, @RequestBody String payload ){
         checkoutService.handleWebhookEvent(new WebhookRequest(headers, payload));
+    }
+
+    @GetMapping("/checkout-success")
+    public String paymentSuccess(@RequestParam(value = "orderId") Long orderId, Model model) {
+        var order = orderRepository.getOneOrderById(orderId).orElseThrow();
+
+        model.addAttribute("orderNumber", "ORD-" + orderId);
+        model.addAttribute("customerName", order.getCustomer().getName());
+        model.addAttribute("totalAmount", order.getTotalPrice());
+        return "payment-success";
+    }
+
+
+    @GetMapping("/checkout-cancel")
+    public String paymentCancel(Model model) {
+        model.addAttribute("supportEmail", "support@roofiahmad.com");
+        return "checkout-cancel";
     }
 
     @ExceptionHandler({PaymentException.class})
