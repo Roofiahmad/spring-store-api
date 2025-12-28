@@ -1,25 +1,4 @@
-server:
-  port: 8000
-
 spring:
-  application:
-    name: spring-store-app
   datasource:
-    url: jdbc:mysql://localhost:3306/store?createDatabaseIfNotExist=true
-    username: root
-    password: basmalah
-  jpa:
-    show-sql: true
-  jwt:
-    secret: ${APP_JWT_SECRET_KEY}
-    accessTokenExpiration: 7200
-    refreshTokenExpiration: 604800
-
-application:
-  payment-gateway: PAYPAL
-
-stripe:
-  secretKey: ${STRIPE_SECRET_KEY}
-  webhookSecretKey: ${STRIPE_WEBHOOK_SECRET_KEY}
-
+    url: ${SPRING_DATASOURCE_URL}
 websiteUrl: http://localhost:4242
