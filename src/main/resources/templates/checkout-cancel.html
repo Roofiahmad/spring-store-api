@@ -17,14 +17,10 @@
 
     <h1 class="text-2xl font-bold text-gray-800 mb-3">Order Not Completed</h1>
     <p class="text-gray-600 mb-8 leading-relaxed">
-        It looks like your payment was canceled or interrupted. Don't worry—**you haven't been charged**, and your items are still waiting in your cart.
+        It looks like your payment was canceled or interrupted. Don't worry you haven't been charged.
     </p>
 
     <div class="space-y-4">
-        <a href="/cart" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition shadow-sm">
-            Return to Cart & Try Again
-        </a>
-
         <div class="flex items-center py-2">
             <div class="flex-grow border-t border-gray-200"></div>
             <span class="px-3 text-sm text-gray-400 italic">Need help?</span>
@@ -35,12 +31,6 @@
             If you're having trouble with your payment method, please contact us at
             <a th:href="'mailto:' + ${supportEmail}" class="text-blue-600 hover:underline font-medium" th:text="${supportEmail}">support@example.com</a>
         </p>
-    </div>
-
-    <div class="mt-8 pt-6 border-t border-gray-100">
-        <a href="/" class="text-gray-500 hover:text-gray-700 text-sm font-medium">
-            &larr; Back to Home
-        </a>
     </div>
 </div>
 </body>

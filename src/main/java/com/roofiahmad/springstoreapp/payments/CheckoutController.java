@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -32,23 +31,6 @@ public class CheckoutController {
     @PostMapping("/webhook")
     public void handleWebHook(@RequestHeader Map<String, String> headers, @RequestBody String payload ){
         checkoutService.handleWebhookEvent(new WebhookRequest(headers, payload));
-    }
-
-    @GetMapping("/checkout-success")
-    public String paymentSuccess(@RequestParam(value = "orderId") Long orderId, Model model) {
-        var order = orderRepository.getOneOrderById(orderId).orElseThrow();
-
-        model.addAttribute("orderNumber", "ORD-" + orderId);
-        model.addAttribute("customerName", order.getCustomer().getName());
-        model.addAttribute("totalAmount", order.getTotalPrice());
-        return "payment-success";
-    }
-
-
-    @GetMapping("/checkout-cancel")
-    public String paymentCancel(Model model) {
-        model.addAttribute("supportEmail", "support@roofiahmad.com");
-        return "checkout-cancel";
     }
 
     @ExceptionHandler({PaymentException.class})
