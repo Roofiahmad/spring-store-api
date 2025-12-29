@@ -47,3 +47,5 @@ Ensure a MySQL database named store is running locally. Run via Maven:
 [!TIP] Live API Documentation: You can view the live production documentation here:
 
 [🔗 Swagger UI - Production](https://spring-store-api-production-8479.up.railway.app/swagger-ui/index.html)
+
+[📪 Postman Documentation](https://documenter.getpostman.com/view/11658732/2sBXVbGYsC#24452afe-677e-4fb1-8ca7-c48428df8301)
