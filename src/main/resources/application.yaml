@@ -13,6 +13,23 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 50MB
+  datasource:
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 10
+      connection-timeout: 10000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+        cacheResultSetMetadata: true
+        cacheServerConfiguration: true
+        rewriteBatchedStatements: true
+      leak-detection-threshold: 5000
 stripe:
   secretKey: ${STRIPE_SECRET_KEY:dummy_stripe_secret_key}
   webhookSecretKey: ${STRIPE_WEBHOOK_SECRET_KEY:dummy_webhook_secret_key}
@@ -21,4 +38,5 @@ minio:
   accessKey: ${MINIO_ACCESS_KEY}
   secretKey: ${MINIO_SECRET_KEY}
   bucket: ${MINIO_BUCKET_NAME}
+
 
