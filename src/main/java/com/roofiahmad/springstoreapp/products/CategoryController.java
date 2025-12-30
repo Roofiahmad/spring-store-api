@@ -4,11 +4,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RestController
@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 public class CategoryController {
 
     private final CategoryRepository categoryRepository;
-    private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
 
     @PostMapping()
     public ResponseEntity<Category> createCategory(@Valid @RequestBody CreateCategoryRequest request, UriComponentsBuilder uriBuilder
@@ -28,11 +26,5 @@ public class CategoryController {
 
         var uri = uriBuilder.path("/category/{id}").buildAndExpand(category.getId()).toUri();
         return ResponseEntity.created(uri).body(category);
-    }
-
-    @GetMapping("/{categoryId}/products")
-    public List<ProductDto> getProductByCategory(@PathVariable(name = "categoryId") Long categoryId) {
-        var products = productRepository.getAllByCategoryId(categoryId);
-        return products.stream().map(productMapper::toDto).collect(Collectors.toList());
     }
 }

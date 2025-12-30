@@ -197,6 +197,7 @@
                     <url>jdbc:mysql://localhost:3306/store</url>
                     <user>root</user>
                     <password>basmalah</password>
+                    <cleanDisabled>false</cleanDisabled>
                 </configuration>
             </plugin>
         </plugins>
