@@ -9,6 +9,10 @@ spring:
     refreshTokenExpiration: 604800
   profiles:
     active: dev
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 50MB
 stripe:
   secretKey: ${STRIPE_SECRET_KEY:dummy_stripe_secret_key}
   webhookSecretKey: ${STRIPE_WEBHOOK_SECRET_KEY:dummy_webhook_secret_key}
@@ -17,3 +21,4 @@ minio:
   accessKey: ${MINIO_ACCESS_KEY}
   secretKey: ${MINIO_SECRET_KEY}
   bucket: ${MINIO_BUCKET_NAME}
+
