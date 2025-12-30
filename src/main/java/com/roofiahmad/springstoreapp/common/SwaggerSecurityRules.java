@@ -1,5 +1,6 @@
 package com.roofiahmad.springstoreapp.common;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ public class SwaggerSecurityRules implements SecurityRules {
     public void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
         registry.requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/swagger-ui.html").permitAll()
-                .requestMatchers("/v3/api-docs/**").permitAll();
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.GET,"/files/**").permitAll();
     }
 }
