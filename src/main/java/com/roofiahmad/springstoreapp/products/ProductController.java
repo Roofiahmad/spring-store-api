@@ -1,5 +1,7 @@
 package com.roofiahmad.springstoreapp.products;
 
+import com.roofiahmad.springstoreapp.products.gallery.ProductGallery;
+import com.roofiahmad.springstoreapp.products.gallery.ProductGalleryRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ public class ProductController {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
+    private final ProductGalleryRepository productGalleryRepository;
 
     @GetMapping
     public List<ProductDto> getAllProducts(
@@ -52,6 +55,8 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
 
+
+
         var productEntity = productMapper.toEntity(request);
         productEntity.setCategory(category.get());
         productEntity = productRepository.save(productEntity);
@@ -77,7 +82,19 @@ public class ProductController {
         if(request.getCategoryId() != null) {
             categoryRepository.findById(request.getCategoryId()).ifPresent(product::setCategory);
         }
-        productRepository.save(product);
+
+        if(request.getGallery() != null) {
+            product.getGallery().clear();
+
+            request.getGallery().forEach(g -> {
+                var newGallery = new ProductGallery();
+                newGallery.setUrl(g.getUrl());
+                newGallery.setProduct(product);
+                product.getGallery().add(newGallery);
+            });
+        }
+
+        productRepository.saveAndFlush(product);
 
         return ResponseEntity.ok(productMapper.toDto(product));
     }

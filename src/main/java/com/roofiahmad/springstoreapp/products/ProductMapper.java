@@ -11,6 +11,7 @@ public interface ProductMapper {
 
     Product toEntity(CreateProductRequest request);
 
+    @Mapping(target = "gallery", ignore = true)
     void update(CreateProductRequest request, @MappingTarget Product product);
 
 }

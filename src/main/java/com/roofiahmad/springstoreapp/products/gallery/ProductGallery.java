@@ -1,0 +1,25 @@
+package com.roofiahmad.springstoreapp.products.gallery;
+
+import com.roofiahmad.springstoreapp.products.Product;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "product_galleries")
+public class ProductGallery {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @Column(name = "url")
+    private String url;
+
+}
