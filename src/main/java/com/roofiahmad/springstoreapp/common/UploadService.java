@@ -8,6 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -15,17 +16,26 @@ public class UploadService {
     private final MinioService minioService;
 
     public Map<String, String> upload(MultipartFile file) throws Exception {
-        minioService.uploadFile(file);
+        String originalName = file.getOriginalFilename();
+        String extension = "";
+        if (originalName != null && originalName.contains(".")) {
+            extension = originalName.substring(originalName.lastIndexOf("."));
+        }
 
-        String fileName = file.getOriginalFilename();
+        String uniqueFileName = UUID.randomUUID().toString() + extension;
+
+        minioService.uploadFile(file, uniqueFileName);
+
         String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/files/download/")
-                .path(fileName)
+                .path("/files/")
+                .path(uniqueFileName)
                 .toUriString();
 
         Map<String, String> uploadResponse = new HashMap<>();
         uploadResponse.put("fileUrl", fileUrl);
-        uploadResponse.put("fileName", fileName);
+        uploadResponse.put("uniqueName", uniqueFileName);
+        uploadResponse.put("originalName", originalName);
+
         return uploadResponse;
     }
 }

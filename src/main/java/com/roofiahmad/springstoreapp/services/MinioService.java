@@ -16,7 +16,7 @@ public class MinioService {
 
     private final MinioClient minioClient;
 
-    public void uploadFile(MultipartFile file) throws Exception {
+    public void uploadFile(MultipartFile file, String filename) throws Exception {
         boolean found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
         if (!found) {
             minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
@@ -25,7 +25,7 @@ public class MinioService {
         minioClient.putObject(
                 PutObjectArgs.builder()
                         .bucket(bucketName)
-                        .object(file.getOriginalFilename())
+                        .object(filename)
                         .stream(file.getInputStream(), file.getSize(), -1)
                         .contentType(file.getContentType())
                         .build()
