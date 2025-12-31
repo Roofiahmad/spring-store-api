@@ -27,11 +27,13 @@ FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
 WORKDIR /app
 
 COPY pom.xml .
-RUN --mount=type=cache,id=maven-store-cache,target=/root/.m2 \
+
+RUN --mount=type=cache,id=m2_cache,target=/root/.m2 \
     mvn dependency:go-offline -B -Dmaven.wagon.http.retryHandler.count=3
 
 COPY src ./src
-RUN --mount=type=cache,id=maven-store-cache,target=/root/.m2 \
+
+RUN --mount=type=cache,id=m2_cache,target=/root/.m2 \
     mvn clean package -DskipTests -B
 
 FROM eclipse-temurin:17-jre-alpine
@@ -44,5 +46,4 @@ COPY --from=build /app/target/*.jar app.jar
 RUN chown springuser:springgroup app.jar
 
 USER springuser
-
-ENTRYPOINT ["java", "-XX:+UseParallelGC", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
