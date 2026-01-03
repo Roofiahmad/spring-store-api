@@ -14,9 +14,9 @@ public class HomeController {
 
     private final OrderRepository orderRepository;
 
-    @RequestMapping("/")
+    @RequestMapping("/health")
     public String index(Model model) {
-       model.addAttribute("name", "Roofiahmad");
+       model.addAttribute("name", "there");
        return "index";
    }
 
