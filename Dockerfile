@@ -10,9 +10,11 @@ RUN mvn clean package -DskipTests -B
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-RUN apk update && apk upgrade && \
+RUN apk update && apk upgrade --no-cache && \
     addgroup -S springgroup && adduser -S springuser -G springgroup
 
 COPY --from=build /app/target/*.jar app.jar
+
 USER springuser
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
