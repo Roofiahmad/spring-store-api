@@ -4,7 +4,6 @@ import com.roofiahmad.springstoreapp.auth.UserPrincipal;
 import com.roofiahmad.springstoreapp.common.ErrorDto;
 import com.roofiahmad.springstoreapp.orders.CartEmptyException;
 import com.roofiahmad.springstoreapp.orders.CartNotFoundException;
-import com.roofiahmad.springstoreapp.orders.OrderRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import java.util.Map;
 @Tag(name="Checkout")
 public class CheckoutController {
     private final CheckoutService checkoutService;
-    private final OrderRepository orderRepository;
 
     @PostMapping
     public CheckoutResponse checkout(@AuthenticationPrincipal UserPrincipal principal, @Valid @RequestBody CheckoutRequest request) {

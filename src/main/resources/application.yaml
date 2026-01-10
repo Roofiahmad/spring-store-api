@@ -30,6 +30,18 @@ spring:
         cacheServerConfiguration: true
         rewriteBatchedStatements: true
       leak-detection-threshold: 5000
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable : true
+            required : true
 stripe:
   secretKey: ${STRIPE_SECRET_KEY:dummy_stripe_secret_key}
   webhookSecretKey: ${STRIPE_WEBHOOK_SECRET_KEY:dummy_webhook_secret_key}
