@@ -51,10 +51,6 @@ public class StripePaymentGateway implements PaymentGateway {
 
             var event = Webhook.constructEvent(payload, signature, webhookSecretKey);
 
-            System.out.println("Signature " + signature);
-            System.out.println("Event " + event);
-            System.out.println("Payload " + payload);
-
            return switch (event.getType()) {
                 case "payment_intent.succeeded" ->
                      Optional.of(new PaymentResult(extractOrderId(event), PaymentStatus.PAID));

@@ -43,8 +43,6 @@ public class OrderService {
         var order = orderRepository.findById(paymentResult.getOrderId()).orElseThrow(OrderNotFoundException::new);
         order.setStatus(paymentResult.getPaymentStatus());
 
-        System.out.println(paymentResult.getPaymentStatus());
-
         if(paymentResult.getPaymentStatus() == PaymentStatus.PAID) {
             // send order confirmation email
             var customer = order.getCustomer();
