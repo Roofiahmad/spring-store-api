@@ -30,7 +30,12 @@ public class LoggingFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
 
 
+        System.out.println("--- Sending Response ---");
         System.out.println("Response Status: " + response.getStatus());
+        response.getHeaderNames().forEach(headerName -> {
+            String headerValue = response.getHeader(headerName);
+            System.out.println("Res-Header: " + headerName + " = " + headerValue);
+        });
         System.out.println("-------------------------");
     }
 }
