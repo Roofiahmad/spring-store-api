@@ -38,7 +38,7 @@ RUN apk update && apk upgrade --no-cache && \
     addgroup -S springgroup && adduser -S springuser -G springgroup
 
 COPY --from=build /app/target/*.jar app.jar
-RUN chown springuser:springgroup app.jar
+RUN chown -R springuser:springgroup /app
 
 USER springuser
 
