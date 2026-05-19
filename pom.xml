@@ -29,7 +29,6 @@
     <properties>
         <java.version>25</java.version>
         <tomcat.version>11.0.22</tomcat.version>
-        <bouncycastle.version>1.84</bouncycastle.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -37,6 +36,12 @@
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp</artifactId>
                 <version>4.12.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk18on</artifactId>
+                <version>1.84</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
