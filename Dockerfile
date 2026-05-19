@@ -42,8 +42,10 @@ RUN chown springuser:springgroup app.jar
 
 USER springuser
 
-# 1. Extract the fat JAR into layers (dependencies, application, loader)
-RUN java -Djarmode=tools -jar app.jar extract --destination extracted
+# Create the deployment directory and Extract the fat JAR into layers (dependencies, application, loader)
+RUN mkdir extracted && \
+    cd extracted && \
+    java -Djarmode=tools -jar ../app.jar extract
 
 # 2. Run a training cycle to generate the Class Data Sharing (CDS) archive file
 RUN java -XX:ArchiveClassesAtExit=extracted/app.jsa \
