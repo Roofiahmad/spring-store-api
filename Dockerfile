@@ -31,6 +31,7 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 RUN mvn package -DskipTests -B
 
+
 FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
@@ -38,24 +39,27 @@ RUN apk update && apk upgrade --no-cache && \
     addgroup -S springgroup && adduser -S springuser -G springgroup
 
 COPY --from=build /app/target/*.jar app.jar
+
 RUN chown -R springuser:springgroup /app
 
 USER springuser
 
-# Create the deployment directory and Extract the fat JAR into layers (dependencies, application, loader)
 RUN mkdir extracted && \
     cd extracted && \
     java -Djarmode=tools -jar ../app.jar extract
 
-# 2. Run a training cycle to generate the Class Data Sharing (CDS) archive file
+
 RUN java -XX:ArchiveClassesAtExit=extracted/app.jsa \
          -Dspring.context.exit=onRefresh \
-         -cp "extracted/dependencies/*:extracted/application/*" \
-         org.springframework.boot.loader.launch.JarLauncher
+         -cp "extracted/dependencies/*:extracted/spring-boot-loader/*:extracted/snapshot-dependencies/*:extracted/application/*" \
+         org.springframework.boot.loader.launch.JarLauncher || \
+    java -XX:ArchiveClassesAtExit=extracted/app.jsa \
+         -Dspring.context.exit=onRefresh \
+         -cp "extracted/dependencies/*:extracted/spring-boot-loader/*:extracted/snapshot-dependencies/*:extracted/application/*" \
+         org.springframework.boot.loader.JarLauncher
 
-# Launch using the optimized classpath loader with the CDS archive mapped into memory
 ENTRYPOINT ["java", \
             "-XX:MaxRAMPercentage=75.0", \
             "-XX:SharedArchiveFile=extracted/app.jsa", \
-            "-cp", "extracted/dependencies/*:extracted/application/*", \
+            "-cp", "extracted/dependencies/*:extracted/spring-boot-loader/*:extracted/snapshot-dependencies/*:extracted/application/*", \
             "org.springframework.boot.loader.launch.JarLauncher"]
