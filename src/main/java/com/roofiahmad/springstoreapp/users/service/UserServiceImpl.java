@@ -1,5 +1,6 @@
-package com.roofiahmad.springstoreapp.users;
+package com.roofiahmad.springstoreapp.users.service;
 
+import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

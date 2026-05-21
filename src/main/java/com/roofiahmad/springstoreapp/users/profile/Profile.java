@@ -1,5 +1,6 @@
-package com.roofiahmad.springstoreapp.users;
+package com.roofiahmad.springstoreapp.users.profile;
 
+import com.roofiahmad.springstoreapp.users.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

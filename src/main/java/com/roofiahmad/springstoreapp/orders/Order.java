@@ -2,7 +2,7 @@ package com.roofiahmad.springstoreapp.orders;
 
 import com.roofiahmad.springstoreapp.carts.Cart;
 import com.roofiahmad.springstoreapp.payments.PaymentStatus;
-import com.roofiahmad.springstoreapp.users.User;
+import com.roofiahmad.springstoreapp.users.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

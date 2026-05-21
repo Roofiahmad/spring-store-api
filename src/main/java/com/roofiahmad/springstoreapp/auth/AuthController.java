@@ -1,6 +1,6 @@
 package com.roofiahmad.springstoreapp.auth;
 
-import com.roofiahmad.springstoreapp.users.UserDto;
+import com.roofiahmad.springstoreapp.users.dtos.UserDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,8 +1,15 @@
-package com.roofiahmad.springstoreapp.users;
+package com.roofiahmad.springstoreapp.users.service;
 
 import com.roofiahmad.springstoreapp.auth.Role;
 import com.roofiahmad.springstoreapp.common.BadRequestException;
 import com.roofiahmad.springstoreapp.common.NotFoundException;
+import com.roofiahmad.springstoreapp.users.dtos.ChangePasswordRequest;
+import com.roofiahmad.springstoreapp.users.dtos.RegisterUserRequest;
+import com.roofiahmad.springstoreapp.users.dtos.UpdateUserRequest;
+import com.roofiahmad.springstoreapp.users.dtos.UserDto;
+import com.roofiahmad.springstoreapp.users.mappers.UserMapper;
+import com.roofiahmad.springstoreapp.users.repository.UserRepository;
+import com.roofiahmad.springstoreapp.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,21 +52,24 @@ public class UserService {
         return userMapper.toDto(userEntity);
     }
 
-    public UserDto updateUser(Long id, UpdateUserRequest request) {
-        var user = userRepository.findById(id).orElseThrow(()-> new NotFoundException("User not found"));
+    public UserDto updateUser(UpdateUserRequest request) {
+        var userPrincipal = Utils.getUserPrincipal();
+        var user = userRepository.findById(userPrincipal.getId()).orElseThrow(()-> new NotFoundException("User not found"));
 
         userMapper.update(request, user);
         userRepository.save(user);
         return userMapper.toDto(user);
     }
 
-    public void deleteUser(Long id) {
-        var userEntity = userRepository.findById(id).orElseThrow(()-> new NotFoundException("User not found"));
+    public void deleteUser() {
+        var userPrincipal = Utils.getUserPrincipal();
+        var userEntity = userRepository.findById(userPrincipal.getId()).orElseThrow(()-> new NotFoundException("User not found"));
         userRepository.delete(userEntity);
     }
 
-    public void changePassword(Long id, ChangePasswordRequest request)  {
-        var user = userRepository.findById(id).orElseThrow(()-> new NotFoundException("User not found"));
+    public void changePassword(ChangePasswordRequest request)  {
+        var userPrincipal = Utils.getUserPrincipal();
+        var user = userRepository.findById(userPrincipal.getId()).orElseThrow(()-> new NotFoundException("User not found"));
 
         if(!passwordEncoder.matches(request.getOldPassword(), user.getPassword())){
             throw new BadRequestException("Old password does not match");

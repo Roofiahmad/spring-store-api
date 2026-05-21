@@ -1,4 +1,4 @@
-package com.roofiahmad.springstoreapp.users;
+package com.roofiahmad.springstoreapp.users.dtos;
 
 import lombok.Data;
 

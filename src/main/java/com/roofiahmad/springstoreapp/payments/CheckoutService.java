@@ -4,7 +4,7 @@ import com.roofiahmad.springstoreapp.auth.UserPrincipal;
 import com.roofiahmad.springstoreapp.carts.CartRepository;
 import com.roofiahmad.springstoreapp.carts.CartService;
 import com.roofiahmad.springstoreapp.orders.*;
-import com.roofiahmad.springstoreapp.users.UserRepository;
+import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

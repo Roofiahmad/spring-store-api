@@ -1,6 +1,6 @@
 package com.roofiahmad.springstoreapp.auth;
 
-import com.roofiahmad.springstoreapp.users.User;
+import com.roofiahmad.springstoreapp.users.entity.User;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.roofiahmad.springstoreapp.users;
+package com.roofiahmad.springstoreapp.users.securityrules;
 
 import com.roofiahmad.springstoreapp.common.SecurityRules;
 import org.springframework.http.HttpMethod;

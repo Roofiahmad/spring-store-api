@@ -3,7 +3,7 @@ package com.roofiahmad.springstoreapp.orders;
 import com.roofiahmad.springstoreapp.common.EmailService;
 import com.roofiahmad.springstoreapp.payments.PaymentResult;
 import com.roofiahmad.springstoreapp.payments.PaymentStatus;
-import com.roofiahmad.springstoreapp.users.UserRepository;
+import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;

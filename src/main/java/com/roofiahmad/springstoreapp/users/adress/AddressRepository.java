@@ -1,4 +1,4 @@
-package com.roofiahmad.springstoreapp.users;
+package com.roofiahmad.springstoreapp.users.adress;
 
 import org.springframework.data.repository.CrudRepository;
 

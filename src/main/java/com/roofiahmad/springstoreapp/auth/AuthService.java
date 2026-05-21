@@ -1,7 +1,7 @@
 package com.roofiahmad.springstoreapp.auth;
 
-import com.roofiahmad.springstoreapp.users.UserDto;
-import com.roofiahmad.springstoreapp.users.UserRepository;
+import com.roofiahmad.springstoreapp.users.dtos.UserDto;
+import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

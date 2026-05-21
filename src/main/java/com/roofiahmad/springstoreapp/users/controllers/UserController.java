@@ -1,9 +1,15 @@
-package com.roofiahmad.springstoreapp.users;
+package com.roofiahmad.springstoreapp.users.controllers;
 
+import com.roofiahmad.springstoreapp.users.dtos.ChangePasswordRequest;
+import com.roofiahmad.springstoreapp.users.dtos.RegisterUserRequest;
+import com.roofiahmad.springstoreapp.users.dtos.UpdateUserRequest;
+import com.roofiahmad.springstoreapp.users.dtos.UserDto;
+import com.roofiahmad.springstoreapp.users.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,6 +24,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDto> getAllUsers(
            @RequestParam(required = false, defaultValue = "", name = "sort") String sort
     ) {
@@ -25,6 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserDto> getUser(@PathVariable(name = "id") Long id) {
         var userDto = userService.getUser(id);
         return ResponseEntity.ok(userDto);
@@ -37,21 +45,21 @@ public class UserController {
        return ResponseEntity.created(uri).body(userDto);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable(name = "id") Long id,@RequestBody UpdateUserRequest request) {
-        var userDto = userService.updateUser(id, request);
-        return ResponseEntity.ok(userDto);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping()
+    public ResponseEntity<String> deleteUser() {
+        userService.deleteUser();
         return ResponseEntity.ok("User deleted successfully");
     }
 
-    @PostMapping("/{id}/change-password")
-    public ResponseEntity<Void> changePassword(@PathVariable(name = "id") Long id, @RequestBody ChangePasswordRequest request) {
-        userService.changePassword(id, request);
+    @PutMapping()
+    public ResponseEntity<UserDto> updateUser(@RequestBody UpdateUserRequest request) {
+        var userDto = userService.updateUser( request);
+        return ResponseEntity.ok(userDto);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<Void> changePassword(@RequestBody ChangePasswordRequest request) {
+        userService.changePassword(request);
         return ResponseEntity.noContent().build();
     }
 
