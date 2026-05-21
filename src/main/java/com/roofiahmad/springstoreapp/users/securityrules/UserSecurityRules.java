@@ -11,6 +11,8 @@ public class UserSecurityRules implements SecurityRules {
 
     @Override
     public void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
-        registry.requestMatchers(HttpMethod.POST,"/users").permitAll();
+        registry.requestMatchers(HttpMethod.POST,"/users").permitAll()
+                .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET,"/users/{id}").hasRole("ADMIN");
     }
 }

@@ -29,9 +29,8 @@ public class UserService {
         if(!Set.of("name", "email").contains(sort))
             sort = "name";
 
-        return userRepository.findAll(Sort.by(sort)).stream()
-                .map(userMapper::toDto)
-                .toList();
+        return userRepository.findAllUsersAsDto(Sort.by(sort));
+
     }
 
     public UserDto getUser(Long id) {
