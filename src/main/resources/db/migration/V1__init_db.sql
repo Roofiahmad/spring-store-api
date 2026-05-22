@@ -16,11 +16,6 @@ CREATE TABLE categories (
                             name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE carts (
-                       id           BINARY(16) DEFAULT (UUID_TO_BIN(UUID())) PRIMARY KEY,
-                       date_created DATE       DEFAULT (CURDATE())           NOT NULL
-);
-
 CREATE TABLE profiles (
                           id             BIGINT NOT NULL PRIMARY KEY,
                           bio            VARCHAR(255) NULL,
@@ -47,8 +42,11 @@ CREATE TABLE products (
                           name        VARCHAR(255)   NOT NULL,
                           description VARCHAR(255)            NULL,
                           price       DECIMAL(10, 2) NOT NULL,
+                          stock       INT DEFAULT 0  NOT NULL,
                           main_image  VARCHAR(255)   NULL,
                           category_id TINYINT        NOT NULL,
+                          created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                           CONSTRAINT products_categories_id_fk
                               FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE RESTRICT
 );
@@ -75,6 +73,15 @@ CREATE TABLE wishlist (
                           CONSTRAINT wishlist_pk PRIMARY KEY (product_id, user_id),
                           CONSTRAINT wishlist_products_id_fk FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
                           CONSTRAINT wishlist_users_id_fk    FOREIGN KEY (user_id)    REFERENCES users (id)    ON DELETE CASCADE
+);
+
+CREATE TABLE carts (
+                       id           BINARY(16) DEFAULT (UUID_TO_BIN(UUID())) PRIMARY KEY,
+                       user_id    BIGINT         NULL,
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                       CONSTRAINT carts_users_id_fk
+                           FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE cart_items (
