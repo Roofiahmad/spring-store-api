@@ -21,22 +21,20 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(
+    public ResponseEntity<LoginResponse> login(
            @Valid @RequestBody LoginRequest request,
            HttpServletResponse response
     ) {
-        var generatedToken = authService.login(request);
-        var refreshToken = generatedToken.get("refreshToken");
-        var accessToken = generatedToken.get("accessToken");
+        var loginResponse = authService.login(request);
 
-        var cookie = new Cookie("refreshToken", refreshToken.toString());
+        var cookie = new Cookie("refreshToken", loginResponse.getRefreshToken());
         cookie.setHttpOnly(true);
         cookie.setPath("/auth/refresh");
         cookie.setMaxAge(jwtConfig.getRefreshTokenExpiration());
         cookie.setSecure(true);
         response.addCookie(cookie);
 
-        return ResponseEntity.ok(new JwtResponse(accessToken.toString()));
+        return ResponseEntity.ok(loginResponse);
     }
 
     @PostMapping("/refresh")

@@ -1,38 +1,39 @@
 package com.roofiahmad.springstoreapp.auth;
 
 import com.roofiahmad.springstoreapp.users.dtos.UserDto;
+import com.roofiahmad.springstoreapp.users.entity.User;
+import com.roofiahmad.springstoreapp.users.mappers.UserMapper;
 import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor
 @Service
 public class AuthService {
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
     private UserRepository userRepository;
     private JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
 
-    public Map<String, Jwt> login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
+    public LoginResponse login(LoginRequest request) {
+        User user = userRepository.findUserByEmail(request.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
 
-        var user = userRepository.findUserByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BadCredentialsException("Invalid email or password");
+        }
+
         var accessToken = jwtService.generateAccessToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
 
-        return Map.of(
-                "accessToken", accessToken,
-                "refreshToken", refreshToken
-        );
+        return LoginResponse.builder().accessToken(accessToken.toString()).refreshToken(refreshToken.toString()).user(userMapper.toDto(user)).build();
     }
 
     public String refreshAccessToken(String refreshToken) {
@@ -58,6 +59,7 @@ public class AuthService {
         if(user != null) {
             var userDto = new UserDto();
             userDto.setId(user.getId());
+            userDto.setRole(user.getRole());
             userDto.setEmail(user.getEmail());
             userDto.setName(user.getName());
 

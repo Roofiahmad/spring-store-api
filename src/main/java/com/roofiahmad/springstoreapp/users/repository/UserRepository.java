@@ -20,6 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByEmailAndRole(String email, Role role);
 
-    @Query("SELECT new com.roofiahmad.springstoreapp.users.dtos.UserDto(u.id, u.name, u.email) FROM User u")
+    @Query("SELECT new com.roofiahmad.springstoreapp.users.dtos.UserDto(u.id, u.name, u.email, u.role) FROM User u")
     List<UserDto> findAllUsersAsDto(Sort sort);
 }
