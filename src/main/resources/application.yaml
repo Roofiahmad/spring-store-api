@@ -5,7 +5,7 @@ spring:
     name: spring-store-app
   jwt:
     secret: ${APP_JWT_SECRET_KEY:dummy_jwt_secret_key}
-    accessTokenExpiration: 7200
+    accessTokenExpiration: 3600
     refreshTokenExpiration: 604800
   profiles:
     active: dev
