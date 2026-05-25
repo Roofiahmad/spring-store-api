@@ -1,6 +1,8 @@
 package com.roofiahmad.springstoreapp.users.service;
 
 import com.roofiahmad.springstoreapp.auth.Role;
+import com.roofiahmad.springstoreapp.carts.Cart;
+import com.roofiahmad.springstoreapp.carts.CartRepository;
 import com.roofiahmad.springstoreapp.common.BadRequestException;
 import com.roofiahmad.springstoreapp.common.NotFoundException;
 import com.roofiahmad.springstoreapp.users.dtos.ChangePasswordRequest;
@@ -14,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -24,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
 
     public List<UserDto> getAllUsers(String sort) {
         if(!Set.of("name", "email").contains(sort))
@@ -38,6 +42,7 @@ public class UserService {
        return userMapper.toDto(user);
     }
 
+    @Transactional
     public UserDto registerUser(RegisterUserRequest request) {
         if(userRepository.existsByEmail(request.getEmail())){
             throw new RuntimeException("Email already registered");
@@ -48,6 +53,11 @@ public class UserService {
         userEntity.setRole(Role.USER);
 
         userEntity = userRepository.save(userEntity);
+
+        Cart cart = new Cart();
+        cart.setUser(userEntity);
+        cartRepository.save(cart);
+
         return userMapper.toDto(userEntity);
     }
 
