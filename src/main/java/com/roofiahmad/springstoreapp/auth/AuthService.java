@@ -6,7 +6,6 @@ import com.roofiahmad.springstoreapp.users.mappers.UserMapper;
 import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,10 +23,10 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findUserByEmail(request.getEmail())
-                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
+                .orElseThrow(() -> new AuthenticationFailedException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid email or password");
+            throw new AuthenticationFailedException("Invalid email or password");
         }
 
         var accessToken = jwtService.generateAccessToken(user);
@@ -39,7 +38,7 @@ public class AuthService {
     public String refreshAccessToken(String refreshToken) {
         var jwtRefreshToken = jwtService.parseToken(refreshToken);
         if(jwtRefreshToken== null || jwtRefreshToken.isExpired()) {
-            throw new BadCredentialsException("Invalid refresh token");
+            throw new AuthenticationFailedException("Invalid refresh token");
         }
 
         var userId = jwtRefreshToken.getUserPrincipalFromRefreshToken(userRepository).getId();
@@ -51,7 +50,7 @@ public class AuthService {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new BadCredentialsException("Unauthorized");
+            throw new AuthenticationFailedException("Unauthorized");
         }
 
         var user = (UserPrincipal) authentication.getPrincipal();
