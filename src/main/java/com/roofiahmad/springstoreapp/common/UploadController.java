@@ -4,6 +4,7 @@ import com.roofiahmad.springstoreapp.services.MinioService;
 import io.minio.StatObjectResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class UploadController {
     }
 
     @GetMapping("/{filename}")
-    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String filename) {
+    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
         try {
             InputStream stream = minioService.getFileStream(filename);
             StatObjectResponse metadata = minioService.getFileMetadata(filename);
