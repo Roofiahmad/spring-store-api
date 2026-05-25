@@ -11,6 +11,8 @@ public class CreateProductRequest {
     private String description;
     private String mainImage;;
     private Double price;
-    private Integer categoryId;
+    private String badge;
+    private Integer stock;
+    private Short categoryId;
     private List<ProductGalleryDto> gallery;
 }
