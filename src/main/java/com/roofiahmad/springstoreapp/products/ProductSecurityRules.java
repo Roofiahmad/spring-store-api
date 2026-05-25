@@ -1,5 +1,6 @@
 package com.roofiahmad.springstoreapp.products;
 
+import com.roofiahmad.springstoreapp.auth.Role;
 import com.roofiahmad.springstoreapp.common.SecurityRules;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,9 +12,10 @@ public class ProductSecurityRules implements SecurityRules {
 
     @Override
     public void configure(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry registry) {
-        registry.requestMatchers(HttpMethod.GET,"/products/**").permitAll();
-//                .requestMatchers(HttpMethod.POST,"/products/**").hasRole(Role.ADMIN.name())
-//                .requestMatchers(HttpMethod.PUT,"/products/**").hasRole(Role.ADMIN.name())
-//                .requestMatchers(HttpMethod.DELETE,"/products/**").hasRole(Role.ADMIN.name());
+        registry.requestMatchers(HttpMethod.GET,"/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET,"/category/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/products/**").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.PUT,"/products/**").hasRole(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.DELETE,"/products/**").hasRole(Role.ADMIN.name());
     }
 }

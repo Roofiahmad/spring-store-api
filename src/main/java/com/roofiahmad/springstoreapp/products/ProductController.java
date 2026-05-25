@@ -50,12 +50,9 @@ public class ProductController {
         }
 
         var category = categoryRepository.findById(request.getCategoryId());
-
         if (category.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
-
 
         var productEntity = productMapper.toEntity(request);
         productEntity.setCategory(category.get());

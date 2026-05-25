@@ -12,6 +12,9 @@ public class ProductDto {
     private String description;
     private String mainImage;
     private Double price;
+    private Integer stock;
+    private String badge;
     private Byte categoryId;
+    private String categoryName;
     private List<ProductGalleryDto> gallery;
 }

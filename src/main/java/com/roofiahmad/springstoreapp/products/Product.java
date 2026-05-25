@@ -30,6 +30,12 @@ public class Product {
     @Column(name = "price")
     private BigDecimal price;
 
+    @Column(name = "stock")
+    private Integer stock;
+
+    @Column(name = "badge")
+    private String badge;
+
     @Column(name = "main_image")
     private String mainImage;
 

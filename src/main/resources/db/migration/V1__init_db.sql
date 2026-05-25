@@ -40,7 +40,8 @@ CREATE TABLE addresses (
 CREATE TABLE products (
                           id          BIGINT AUTO_INCREMENT PRIMARY KEY,
                           name        VARCHAR(255)   NOT NULL,
-                          description VARCHAR(255)            NULL,
+                          description VARCHAR(255)   NULL,
+                          badge       VARCHAR(100)   NULL,
                           price       DECIMAL(10, 2) NOT NULL,
                           stock       INT DEFAULT 0  NOT NULL,
                           main_image  VARCHAR(255)   NULL,
