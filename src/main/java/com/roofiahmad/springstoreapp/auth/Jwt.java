@@ -1,7 +1,10 @@
 package com.roofiahmad.springstoreapp.auth;
 
+import com.roofiahmad.springstoreapp.users.entity.User;
+import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -26,6 +29,19 @@ public class Jwt {
         userPrincipal.setEmail(claims.get("email", String.class));
         userPrincipal.setId(Long.parseLong(claims.getSubject()));
         userPrincipal.setRole(Role.valueOf(claims.get("role", String.class)));
+        return userPrincipal;
+    }
+
+    public UserPrincipal getUserPrincipalFromRefreshToken(UserRepository userRepository) {
+        Long userId = Long.parseLong(claims.getSubject());
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + userId));
+
+        var userPrincipal = new UserPrincipal();
+        userPrincipal.setId(user.getId());
+        userPrincipal.setName(user.getName());
+        userPrincipal.setEmail(user.getEmail());
+        userPrincipal.setRole(user.getRole());
         return userPrincipal;
     }
 

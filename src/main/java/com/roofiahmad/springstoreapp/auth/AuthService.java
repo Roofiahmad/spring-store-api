@@ -42,7 +42,7 @@ public class AuthService {
             throw new BadCredentialsException("Invalid refresh token");
         }
 
-        var userId = jwtRefreshToken.getUserPrincipal().getId();
+        var userId = jwtRefreshToken.getUserPrincipalFromRefreshToken(userRepository).getId();
         var user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         return jwtService.generateAccessToken(user).toString();
     }
