@@ -1,6 +1,7 @@
 package com.roofiahmad.springstoreapp.carts;
 
 import com.roofiahmad.springstoreapp.products.Product;
+import com.roofiahmad.springstoreapp.users.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,12 @@ public class Cart {
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDate dateCreated;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @OneToMany(mappedBy = "cart", cascade = CascadeType.MERGE, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OrderBy("id ASC")
     private Set<CartItem> items = new LinkedHashSet<>();
 
     public BigDecimal getTotalPrice(){

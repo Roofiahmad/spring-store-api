@@ -12,4 +12,8 @@ public interface CartRepository extends JpaRepository<Cart, UUID> {
     @EntityGraph(attributePaths = "items.product")
     @Query("SELECT c FROM Cart c WHERE c.id = :cardId")
     Optional<Cart> getCartWithItems(@Param("cardId") UUID cartId);
+
+    @EntityGraph(attributePaths = "items.product")
+    @Query("SELECT c FROM Cart c WHERE c.user.id = :userId")
+    Optional<Cart> getCartWithUserId(@Param("userId") Long userId);
 }

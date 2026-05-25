@@ -1,13 +1,22 @@
 package com.roofiahmad.springstoreapp.payments;
 
 import com.roofiahmad.springstoreapp.auth.UserPrincipal;
+import com.roofiahmad.springstoreapp.carts.CartItem;
 import com.roofiahmad.springstoreapp.carts.CartRepository;
 import com.roofiahmad.springstoreapp.carts.CartService;
+import com.roofiahmad.springstoreapp.common.BadRequestException;
 import com.roofiahmad.springstoreapp.orders.*;
+import com.roofiahmad.springstoreapp.products.Product;
+import com.roofiahmad.springstoreapp.products.ProductRepository;
 import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -19,22 +28,41 @@ public class CheckoutService {
     private final CartRepository cartRepository;
     private final PaymentGateway paymentGateway;
     private final OrderService orderService;
+    private final ProductRepository productRepository;
 
 
     @Transactional
     public CheckoutResponse checkout(CheckoutRequest request, UserPrincipal principal) throws PaymentException {
-        var cart = cartRepository.getCartWithItems(request.getCartId()).orElse(null);
-        if (cart == null) {
-            throw new CartNotFoundException();
-        }
+        var cart = cartRepository.getCartWithItems(request.getCartId()).orElseThrow(CartNotFoundException::new);
 
         if(cart.isEmpty()) {
            throw new CartEmptyException();
         }
 
+
         var customer = userRepository.findById(principal.getId()).orElseThrow();
         var order = Order.fromCart(cart, customer);
         orderRepository.save(order);
+
+        List<Long> productIds = cart.getItems().stream()
+                .map(item -> item.getProduct().getId())
+                .sorted() // Aligns with ORDER BY for deadlock safety
+                .toList();
+
+        List<Product> lockedProducts = productRepository.findAllByIdsWithLock(productIds);
+
+        Map<Long, Product> productMap = lockedProducts.stream()
+                .collect(Collectors.toMap(Product::getId, Function.identity()));
+
+        for (CartItem item : cart.getItems()) {
+            Product product = productMap.get(item.getProduct().getId());
+            if (product == null || product.getStock() < item.getQuantity()) {
+                throw new BadRequestException("Out of stock: " + (product != null ? product.getName() : "Unknown"));
+            }
+            product.setStock(product.getStock() - item.getQuantity());
+        }
+        
+        productRepository.saveAll(lockedProducts);
 
       try{
           var session = paymentGateway.createCheckoutSession(order);

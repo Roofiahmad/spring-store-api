@@ -6,7 +6,10 @@ import java.math.BigDecimal;
 
 @Data
 public class CartItemDto {
-   private CartProductDto product;
+   private String id;
+   private String name;
+   private Float price;
+   private String mainImage;
    private Integer quantity;
    private BigDecimal totalPrice;
 }

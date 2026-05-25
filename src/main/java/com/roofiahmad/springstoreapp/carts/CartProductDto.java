@@ -7,5 +7,6 @@ public class CartProductDto {
   private   String id;
   private  String name;
   private  Float price;
+  private String mainImage;
 
 }

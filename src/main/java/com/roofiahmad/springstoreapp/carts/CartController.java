@@ -40,9 +40,9 @@ public class CartController {
     }
 
 
-    @GetMapping("/{cartId}")
-    public CartDto getCart(@PathVariable UUID cartId) {
-        return cartService.getCart(cartId);
+    @GetMapping()
+    public CartDto getCart() {
+        return cartService.getCart();
     }
 
     @PutMapping("/{cartId}/items/{productId}")
@@ -56,14 +56,14 @@ public class CartController {
             @PathVariable("productId") Long productId) {
 
         cartService.deleteProduct(cartId, productId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{cartId}/items")
     public ResponseEntity<?> clearCart(
             @PathVariable("cartId") UUID cartId) {
         cartService.clearCart(cartId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @ExceptionHandler(CartNotFoundException.class)

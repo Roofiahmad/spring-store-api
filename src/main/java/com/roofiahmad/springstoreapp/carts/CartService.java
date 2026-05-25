@@ -3,6 +3,7 @@ package com.roofiahmad.springstoreapp.carts;
 import com.roofiahmad.springstoreapp.orders.CartNotFoundException;
 import com.roofiahmad.springstoreapp.products.ProductNotFoundException;
 import com.roofiahmad.springstoreapp.products.ProductRepository;
+import com.roofiahmad.springstoreapp.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +38,9 @@ public class CartService {
         return cartMapper.toDto(cartItem);
     }
 
-    public CartDto getCart(UUID cartId) {
-        var cart = cartRepository.getCartWithItems(cartId).orElse(null);
+    public CartDto getCart() {
+        var user = Utils.getUserPrincipal();
+        var cart = cartRepository.getCartWithUserId(user.getId()).orElse(null);
         if (cart == null) {
             throw new CartNotFoundException();
         };
