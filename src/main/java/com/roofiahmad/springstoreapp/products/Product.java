@@ -50,5 +50,5 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<ProductGallery> gallery =  new ArrayList<>();;
+    private List<ProductGallery> gallery =  new ArrayList<>();
 }
