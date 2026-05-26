@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class Product {
 
     @Column(name = "stock")
     private Integer stock;
+
+    @Column(name="created_at")
+    private LocalDateTime createdAt;
 
     @Column(name = "badge")
     private String badge;
