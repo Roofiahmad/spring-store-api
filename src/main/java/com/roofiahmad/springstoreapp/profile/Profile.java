@@ -1,5 +1,6 @@
-package com.roofiahmad.springstoreapp.users.profile;
+package com.roofiahmad.springstoreapp.profile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.roofiahmad.springstoreapp.users.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,5 +35,6 @@ public class Profile {
     @MapsId
     @JoinColumn(name = "id")
     @ToString.Exclude
+    @JsonIgnore
     private User user;
 }

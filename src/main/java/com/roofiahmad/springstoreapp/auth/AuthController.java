@@ -1,6 +1,5 @@
 package com.roofiahmad.springstoreapp.auth;
 
-import com.roofiahmad.springstoreapp.users.dtos.UserDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,11 +42,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(accessToken));
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<UserDto> me() {
-        var me = authService.getMe().orElseThrow();
-        return ResponseEntity.ok(me);
-    }
+
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Void> handleBadCredentials() {
