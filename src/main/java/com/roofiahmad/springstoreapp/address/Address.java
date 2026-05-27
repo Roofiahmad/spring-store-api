@@ -1,5 +1,6 @@
-package com.roofiahmad.springstoreapp.users.adress;
+package com.roofiahmad.springstoreapp.address;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.roofiahmad.springstoreapp.users.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,8 +31,15 @@ public class Address {
     @Column(name = "zip")
     private String zip;
 
+    @Column(name = "label")
+    private String label;
+
+    @Column(name = "is_primary")
+    private Boolean isPrimary;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @ToString.Exclude
+    @JsonIgnore
     private User user;
 }

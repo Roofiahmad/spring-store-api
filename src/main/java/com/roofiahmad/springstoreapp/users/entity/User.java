@@ -2,8 +2,8 @@ package com.roofiahmad.springstoreapp.users.entity;
 
 import com.roofiahmad.springstoreapp.products.Product;
 import com.roofiahmad.springstoreapp.auth.Role;
-import com.roofiahmad.springstoreapp.users.adress.Address;
-import com.roofiahmad.springstoreapp.users.profile.Profile;
+import com.roofiahmad.springstoreapp.address.Address;
+import com.roofiahmad.springstoreapp.profile.Profile;
 import jakarta.persistence.*;
 import lombok.*;
 

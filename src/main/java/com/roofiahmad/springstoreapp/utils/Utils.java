@@ -1,15 +1,15 @@
 package com.roofiahmad.springstoreapp.utils;
 
+import com.roofiahmad.springstoreapp.auth.AuthenticationFailedException;
 import com.roofiahmad.springstoreapp.auth.UserPrincipal;
 import com.roofiahmad.springstoreapp.common.NotFoundException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class Utils {
     public static UserPrincipal getUserPrincipal() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {
-            throw new BadCredentialsException("Unauthorized");
+            throw new AuthenticationFailedException("Unauthenticated");
         }
 
         var userPrincipal = (UserPrincipal) authentication.getPrincipal();
