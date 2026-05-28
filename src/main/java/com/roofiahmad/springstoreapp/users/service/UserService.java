@@ -5,6 +5,8 @@ import com.roofiahmad.springstoreapp.carts.Cart;
 import com.roofiahmad.springstoreapp.carts.CartRepository;
 import com.roofiahmad.springstoreapp.common.BadRequestException;
 import com.roofiahmad.springstoreapp.common.NotFoundException;
+import com.roofiahmad.springstoreapp.profile.Profile;
+import com.roofiahmad.springstoreapp.profile.ProfileRepository;
 import com.roofiahmad.springstoreapp.users.dtos.ChangePasswordRequest;
 import com.roofiahmad.springstoreapp.users.dtos.RegisterUserRequest;
 import com.roofiahmad.springstoreapp.users.dtos.UpdateUserRequest;
@@ -28,6 +30,7 @@ public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final CartRepository cartRepository;
+    private final ProfileRepository profileRepository;
 
     public List<UserDto> getAllUsers(String sort) {
         if(!Set.of("name", "email").contains(sort))
@@ -53,6 +56,10 @@ public class UserService {
         userEntity.setRole(Role.USER);
 
         userEntity = userRepository.save(userEntity);
+
+        Profile profile = new Profile();
+        profile.setUser(userEntity);
+        profileRepository.save(profile);
 
         Cart cart = new Cart();
         cart.setUser(userEntity);
