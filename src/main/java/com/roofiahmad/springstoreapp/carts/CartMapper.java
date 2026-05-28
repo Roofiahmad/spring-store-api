@@ -5,7 +5,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface CartMapper {
-    @Mapping(target="totalPrice", expression = "java(cart.getTotalPrice())")
+    @Mapping(target="subTotal", expression = "java(cart.getSubTotal())")
     CartDto toDto(Cart cart);
 
     @Mapping(source = "product.id", target = "id")

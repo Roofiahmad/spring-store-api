@@ -2,3 +2,7 @@ spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL}
 websiteUrl: ${WEBSITE_URL}
+frontend:
+  urls: ${FRONTEND_URLS}
+orderCancelPath: ${ORDER_CANCEL_PATH}
+orderSuccessPath: ${ORDER_SUCCESS_PATH}

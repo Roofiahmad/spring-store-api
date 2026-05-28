@@ -1,0 +1,11 @@
+ALTER TABLE orders
+    MODIFY COLUMN total_price DECIMAL(12, 2) NOT NULL,
+    ADD COLUMN subtotal DECIMAL(12, 2) NOT NULL AFTER status,
+    ADD COLUMN shipping_fee DECIMAL(10, 2) NOT NULL DEFAULT 0.00 AFTER subtotal,
+    ADD COLUMN vat_amount DECIMAL(10, 2) NOT NULL DEFAULT 0.00 AFTER shipping_fee;
+
+ALTER TABLE orders
+    ADD COLUMN shipping_address_snapshot JSON NOT NULL AFTER vat_amount;
+
+ALTER TABLE orders
+    ADD COLUMN updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL AFTER created_at;

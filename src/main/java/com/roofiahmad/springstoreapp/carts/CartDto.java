@@ -11,5 +11,8 @@ import java.util.UUID;
 public class CartDto {
     private UUID id;
     private Set<CartItemDto> items = new HashSet<>();
+    private BigDecimal vatAmount = BigDecimal.ZERO;
+    private BigDecimal shippingFee = BigDecimal.ZERO;
+    private BigDecimal subTotal = BigDecimal.ZERO;
     private BigDecimal totalPrice = BigDecimal.ZERO;
 }

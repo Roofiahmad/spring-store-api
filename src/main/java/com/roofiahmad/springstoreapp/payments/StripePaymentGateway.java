@@ -20,6 +20,12 @@ public class StripePaymentGateway implements PaymentGateway {
     @Value("${websiteUrl}")
     private String websiteUrl;
 
+    @Value("${orderSuccessPath}")
+    private String checkoutSuccessPath;
+
+    @Value("${orderCancelPath}")
+    private String checkoutCancelPath;
+
     @Value("${stripe.webhookSecretKey}")
     private String webhookSecretKey;
 
@@ -32,6 +38,12 @@ public class StripePaymentGateway implements PaymentGateway {
                 var lineItem = createLineItem(item);
                 builder.addLineItem(lineItem);
             });
+
+            var shippingFeeLineItem = createShippingFeeLineItem(order);
+            var vatAmountLineItem = createVatAmountLineItem(order);
+
+            builder.addLineItem(shippingFeeLineItem);
+            builder.addLineItem(vatAmountLineItem);
 
             var session =  Session.create(builder.build());
             return new CheckoutSession(session.getUrl());
@@ -65,6 +77,8 @@ public class StripePaymentGateway implements PaymentGateway {
         }
     }
 
+
+
     private Long extractOrderId(Event event) {
         var stripeObject = event.getDataObjectDeserializer().getObject().orElseThrow(()-> new PaymentException("cannot deserialize stripe event. check SDK and API version"));
 
@@ -76,8 +90,8 @@ public class StripePaymentGateway implements PaymentGateway {
     private SessionCreateParams.Builder createBuilder(Order order) {
         return SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl(websiteUrl + "/checkout-success?orderId=" + order.getId())
-                .setCancelUrl(websiteUrl + "/checkout-cancel")
+                .setSuccessUrl(websiteUrl + checkoutSuccessPath + "?orderId=" + order.getId())
+                .setCancelUrl(websiteUrl + checkoutCancelPath)
                 .setPaymentIntentData(createPaymentIntent(order));
     }
 
@@ -95,7 +109,9 @@ public class StripePaymentGateway implements PaymentGateway {
 
     private  SessionCreateParams.LineItem.PriceData createPriceData(OrderItem item) {
         return SessionCreateParams.LineItem.PriceData.builder()
-                .setCurrency("usd")
+//              .setCurrency("usd")
+//              .setUnitAmountDecimal(item.getUnitPrice().multiply(BigDecimal.valueOf(100)))
+                .setCurrency("idr")
                 .setUnitAmountDecimal(item.getUnitPrice().multiply(BigDecimal.valueOf(100)))
                 .setProductData(createProductData(item))
                 .build();
@@ -104,6 +120,41 @@ public class StripePaymentGateway implements PaymentGateway {
     private  SessionCreateParams.LineItem.PriceData.ProductData createProductData(OrderItem item) {
         return SessionCreateParams.LineItem.PriceData.ProductData.builder()
                 .setName(item.getProduct().getName())
+                .build();
+    }
+
+    private SessionCreateParams.LineItem createShippingFeeLineItem(Order order){
+        return SessionCreateParams.LineItem.builder()
+                .setQuantity(1L)
+                .setPriceData(
+                        SessionCreateParams.LineItem.PriceData.builder()
+                                .setCurrency("idr")
+                                .setUnitAmountDecimal(order.getShippingFee().multiply(BigDecimal.valueOf(100)))
+                                .setProductData(
+                                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                .setName("Logistics Shipping Fee")
+                                                .setDescription("JNE / J&T Delivery Courier Cost")
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+    }
+
+    private SessionCreateParams.LineItem createVatAmountLineItem(Order order){
+        return SessionCreateParams.LineItem.builder()
+                .setQuantity(1L)
+                .setPriceData(
+                        SessionCreateParams.LineItem.PriceData.builder()
+                                .setCurrency("idr")
+                                .setUnitAmountDecimal(order.getVatAmount().multiply(BigDecimal.valueOf(100)))
+                                .setProductData(
+                                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                                                .setName("VAT Tax Framework (11%)")
+                                                .build()
+                                )
+                                .build()
+                )
                 .build();
     }
 }

@@ -1,18 +1,25 @@
 package com.roofiahmad.springstoreapp.payments;
 
+import com.roofiahmad.springstoreapp.address.Address;
+import com.roofiahmad.springstoreapp.address.AddressDto;
+import com.roofiahmad.springstoreapp.address.AddressMapper;
+import com.roofiahmad.springstoreapp.address.AddressRepository;
 import com.roofiahmad.springstoreapp.auth.UserPrincipal;
 import com.roofiahmad.springstoreapp.carts.CartItem;
 import com.roofiahmad.springstoreapp.carts.CartRepository;
 import com.roofiahmad.springstoreapp.carts.CartService;
 import com.roofiahmad.springstoreapp.common.BadRequestException;
+import com.roofiahmad.springstoreapp.common.NotFoundException;
 import com.roofiahmad.springstoreapp.orders.*;
 import com.roofiahmad.springstoreapp.products.Product;
 import com.roofiahmad.springstoreapp.products.ProductRepository;
 import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -29,6 +36,14 @@ public class CheckoutService {
     private final PaymentGateway paymentGateway;
     private final OrderService orderService;
     private final ProductRepository productRepository;
+    private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
+
+    @Value("${order.shippingFee}")
+    private BigDecimal defaultShippingFee;
+
+    @Value("${order.valueAddedTax}")
+    private BigDecimal vatRate;
 
 
     @Transactional
@@ -39,10 +54,12 @@ public class CheckoutService {
            throw new CartEmptyException();
         }
 
-
         var customer = userRepository.findById(principal.getId()).orElseThrow();
-        var order = Order.fromCart(cart, customer);
-        orderRepository.save(order);
+        Address userAddress = addressRepository.findById(request.getShippingAddressId())
+                .orElseThrow(() -> new NotFoundException("Address not found"));
+        AddressDto addressSnapshot = addressMapper.toAddressDto(userAddress);
+
+        var order = Order.fromCart(cart, customer, addressSnapshot, defaultShippingFee, vatRate);
 
         List<Long> productIds = cart.getItems().stream()
                 .map(item -> item.getProduct().getId())
@@ -63,6 +80,7 @@ public class CheckoutService {
         }
         
         productRepository.saveAll(lockedProducts);
+        orderRepository.save(order);
 
       try{
           var session = paymentGateway.createCheckoutSession(order);

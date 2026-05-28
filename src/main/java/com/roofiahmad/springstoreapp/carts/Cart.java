@@ -34,7 +34,8 @@ public class Cart {
     @OrderBy("id ASC")
     private Set<CartItem> items = new LinkedHashSet<>();
 
-    public BigDecimal getTotalPrice(){
+
+    public BigDecimal getSubTotal(){
         return items.stream()
                 .map(CartItem::getTotalPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
