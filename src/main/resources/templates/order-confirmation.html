@@ -8,7 +8,9 @@
         .header { background-color: #4CAF50; color: white; padding: 10px; text-align: center; border-radius: 10px 10px 0 0; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border-bottom: 1px solid #ddd; padding: 10px; text-align: left; }
-        .total { font-size: 18px; font-weight: bold; text-align: right; margin-top: 20px; }
+        .total-label { text-align: right; font-weight: bold; color: #555; border-bottom: none; padding: 6px 10px; }
+        .total-value { text-align: right; border-bottom: none; padding: 6px 10px; }
+        .grand-total { font-size: 18px; font-weight: bold; color: #4CAF50 !important; border-top: 2px solid #ddd; padding-top: 12px; }
     </style>
 </head>
 <body>
@@ -23,25 +25,48 @@
         <thead>
         <tr>
             <th>Item</th>
-            <th>Quantity</th>
-            <th>Price</th>
+            <th style="text-align: center;">Quantity</th>
+            <th style="text-align: right;">Price</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="item : ${items}">
             <td th:text="${item.name}">Item Name</td>
-            <td th:text="${item.quantity}">1</td>
-            <td th:text="${item.price}">$0.00</td>
+            <td style="text-align: center;" th:text="${item.quantity}">1</td>
+            <td style="text-align: right;">
+                Rp <span th:text="${#numbers.formatDecimal(item.price, 0, 'POINT', 0, 'COMMA')}">0</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" class="total-label" style="padding-top: 20px;">Subtotal:</td>
+            <td class="total-value" style="padding-top: 20px;">
+                Rp <span th:text="${#numbers.formatDecimal(subtotal, 0, 'POINT', 0, 'COMMA')}">0</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="total-label">Logistics Carrier Fee:</td>
+            <td class="total-value">
+                Rp <span th:text="${#numbers.formatDecimal(shippingFee, 0, 'POINT', 0, 'COMMA')}">0</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="total-label">VAT Tax Framework (11%):</td>
+            <td class="total-value">
+                Rp <span th:text="${#numbers.formatDecimal(vatAmount, 0, 'POINT', 0, 'COMMA')}">0</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="total-label grand-total">Grand Total:</td>
+            <td class="total-value grand-total">
+                Rp <span th:text="${#numbers.formatDecimal(totalAmount, 0, 'POINT', 0, 'COMMA')}">0</span>
+            </td>
         </tr>
         </tbody>
     </table>
 
-    <div class="total">
-        Total: $<span th:text="${totalAmount}">0.00</span>
-    </div>
-
-    <p>We'll notify you when your items are on the way!</p>
-    <p>Best regards,<br/>Roofiahmad Homelabs</p>
+    <p style="margin-top: 30px;">We'll notify you when your items are on the way!</p>
+    <p>Best regards,<br/><strong>Roofiahmad Homelabs</strong></p>
 </div>
 </body>
 </html>

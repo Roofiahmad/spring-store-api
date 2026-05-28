@@ -47,14 +47,16 @@ public class OrderService {
             Map<String, Object> model = new HashMap<>();
             model.put("customerName", customer.getName());
             model.put("orderNumber", "REF-" + Year.now().getValue() + "-" + order.getId());
-            model.put("totalAmount", order.getTotalPrice());
-
             model.put("items", order.getItems().stream().map(p -> Map.of(
                             "name", p.getProduct().getName(),
                             "quantity", p.getQuantity(),
                             "price", p.getTotalPrice()
                     )
             ).toList());
+            model.put("subtotal", order.getSubtotal());
+            model.put("shippingFee", order.getShippingFee());
+            model.put("vatAmount", order.getVatAmount());
+            model.put("totalAmount", order.getTotalPrice());
 
             try {
                 emailService.sendOrderEmail(order.getCustomerEmail(), "ORDER-" + order.getId(), model);
