@@ -3,7 +3,6 @@ package com.roofiahmad.springstoreapp.orders;
 import com.roofiahmad.springstoreapp.common.EmailService;
 import com.roofiahmad.springstoreapp.payments.PaymentResult;
 import com.roofiahmad.springstoreapp.payments.PaymentStatus;
-import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -20,7 +19,6 @@ import java.util.Map;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final UserRepository userRepository;
     private final EmailService emailService;
 
     public List<OrderDto> getAllOrders(Long userId) {
@@ -59,7 +57,7 @@ public class OrderService {
             ).toList());
 
             try {
-                emailService.sendOrderEmail(customer.getEmail(), "ORDER-" + order.getId(), model);
+                emailService.sendOrderEmail(order.getCustomerEmail(), "ORDER-" + order.getId(), model);
             } catch (MessagingException e) {
                 throw new RuntimeException(e);
             }

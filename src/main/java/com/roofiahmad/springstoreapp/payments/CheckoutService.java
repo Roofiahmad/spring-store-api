@@ -60,6 +60,8 @@ public class CheckoutService {
         AddressDto addressSnapshot = addressMapper.toAddressDto(userAddress);
 
         var order = Order.fromCart(cart, customer, addressSnapshot, defaultShippingFee, vatRate);
+        order.setCustomerEmail(request.getEmail());
+        order.setCustomerPhoneNumber(request.getPhoneNumber());
 
         List<Long> productIds = cart.getItems().stream()
                 .map(item -> item.getProduct().getId())

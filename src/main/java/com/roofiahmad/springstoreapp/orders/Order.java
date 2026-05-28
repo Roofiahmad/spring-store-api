@@ -33,10 +33,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
-    @Column(name = "created_at", insertable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-
     @Column(name = "subtotal", nullable = false)
     private BigDecimal subtotal;
 
@@ -53,8 +49,17 @@ public class Order {
     @Column(name = "shipping_address_snapshot", nullable = false)
     private AddressDto shippingAddressSnapshot;
 
+    @Column(name = "customer_email", nullable = false)
+    private String customerEmail;
+
+    @Column(name = "customer_phone_number", nullable = false)
+    private String customerPhoneNumber;
+
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<OrderItem> items = new LinkedHashSet<>();
+
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt;
 
 
     public static Order fromCart(Cart cart, User customer, AddressDto addressSnapshot, BigDecimal defaultShippingFee, BigDecimal vatRate) {
