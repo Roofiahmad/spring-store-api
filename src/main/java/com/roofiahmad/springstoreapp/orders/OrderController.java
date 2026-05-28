@@ -1,11 +1,10 @@
 package com.roofiahmad.springstoreapp.orders;
 
 import com.roofiahmad.springstoreapp.common.ErrorDto;
-import com.roofiahmad.springstoreapp.auth.UserPrincipal;
+import com.roofiahmad.springstoreapp.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +17,13 @@ public class OrderController {
 
     @GetMapping
     public List<OrderDto> getOrders() {
-        var user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = Utils.getUserPrincipal();
         return orderService.getAllOrders(user.getId());
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<?> getOrder(@PathVariable Long orderId) {
-        var user = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var user = Utils.getUserPrincipal();
 
         var orderDto = orderService.getOrder(user.getId(), orderId);
         if (orderDto == null) {

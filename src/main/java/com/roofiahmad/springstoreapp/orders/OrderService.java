@@ -5,6 +5,7 @@ import com.roofiahmad.springstoreapp.payments.PaymentResult;
 import com.roofiahmad.springstoreapp.payments.PaymentStatus;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class OrderService {
     private final EmailService emailService;
 
     public List<OrderDto> getAllOrders(Long userId) {
-        var orders = orderRepository.getOrdersByCustomer(userId);
+        var orders = orderRepository.getOrdersByCustomer(userId, PageRequest.of(0, 4));
         return orders.stream().map(orderMapper::toDto).toList();
     }
 

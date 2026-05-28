@@ -1,5 +1,6 @@
 package com.roofiahmad.springstoreapp.orders;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,12 +11,12 @@ import java.util.Optional;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     @EntityGraph(attributePaths = {"items.product"})
-    @Query("SELECT o FROM Order o WHERE o.customer.id = :customerId")
-    public List<Order> getOrdersByCustomer(@Param("customerId") Long customerId);
+    @Query("SELECT o FROM Order o WHERE o.customer.id = :customerId ORDER BY o.createdAt DESC")
+    List<Order> getOrdersByCustomer(@Param("customerId") Long customerId, Pageable pageable);
 
     @EntityGraph(attributePaths = {"items.product"})
     @Query("SELECT o FROM Order o WHERE o.id = :orderId")
-    public Optional<Order> getOneOrderWithItems(@Param("orderId") Long orderId);
+    Optional<Order> getOneOrderWithItems(@Param("orderId") Long orderId);
 
-    public Optional<Order> getOneOrderById(Long orderId);
+    Optional<Order> getOneOrderById(Long orderId);
 }

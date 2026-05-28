@@ -1,5 +1,6 @@
 package com.roofiahmad.springstoreapp.orders;
 
+import com.roofiahmad.springstoreapp.address.AddressDto;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,6 +12,9 @@ public class OrderDto {
     private Long id;
     private String status;
     private BigDecimal totalPrice;
+    private BigDecimal shippingFee;
+    private BigDecimal vatAmount;
     private LocalDateTime createdAt;
     private List<OrderItemDto> items;
+    private AddressDto shippingAddress;
 }
