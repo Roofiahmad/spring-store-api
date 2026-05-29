@@ -10,7 +10,9 @@ public interface OrderMapper {
     @Mapping(source = "shippingAddressSnapshot", target = "shippingAddress")
     OrderDto toDto(Order order);
 
-    @Mapping(source = "product.name", target = "name")
+    OrderStatusHistoryDto statusHistoryToDto(OrderStatusHistory orderStatusHistory);
+
+    @Mapping(source = "product", target = ".")
     OrderItemDto toDto(OrderItem orderItem);
 
     List<OrderItemDto> toDto(List<OrderItem> orderItems);

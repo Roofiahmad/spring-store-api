@@ -12,7 +12,9 @@ import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -34,7 +36,7 @@ public class Order {
     private PaymentStatus status;
 
     @Column(name = "subtotal", nullable = false)
-    private BigDecimal subtotal;
+    private BigDecimal subTotal;
 
     @Column(name = "shipping_fee", nullable = false)
     private BigDecimal shippingFee;
@@ -58,6 +60,10 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Set<OrderItem> items = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("createdAt ASC")
+    private List<OrderStatusHistory> statusHistory = new ArrayList<>();
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -69,8 +75,8 @@ public class Order {
 
         var order = new Order();
         order.setCustomer(customer);
-        order.setStatus(PaymentStatus.PENDING);
-        order.setSubtotal(subTotal);
+        order.insertStatusHistory(PaymentStatus.PENDING, "Waiting user to paid");
+        order.setSubTotal(subTotal);
         order.setShippingFee(defaultShippingFee);
         order.setVatAmount(calculatedVat);
         order.setShippingAddressSnapshot(addressSnapshot);
@@ -86,6 +92,13 @@ public class Order {
 
     public boolean isPlacedBy(Long customerId) {
        return customer.getId().equals(customerId);
+    }
+
+    public void insertStatusHistory(PaymentStatus newStatus, String trackingNotes) {
+        this.setStatus(newStatus);
+
+        OrderStatusHistory historyEntry = new OrderStatusHistory(this, newStatus, trackingNotes);
+        this.statusHistory.add(historyEntry);
     }
 
 }

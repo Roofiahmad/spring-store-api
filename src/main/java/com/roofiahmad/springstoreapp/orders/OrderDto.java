@@ -14,7 +14,10 @@ public class OrderDto {
     private BigDecimal totalPrice;
     private BigDecimal shippingFee;
     private BigDecimal vatAmount;
+    private BigDecimal subTotal;
     private LocalDateTime createdAt;
     private List<OrderItemDto> items;
     private AddressDto shippingAddress;
+    private List<OrderStatusHistoryDto> statusHistory;
+    private String customerPhoneNumber;
 }

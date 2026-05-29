@@ -40,7 +40,7 @@ public class OrderService {
     @Transactional
     public void updatePaymentStatus(PaymentResult paymentResult) {
         var order = orderRepository.findById(paymentResult.getOrderId()).orElseThrow(OrderNotFoundException::new);
-        order.setStatus(paymentResult.getPaymentStatus());
+        order.insertStatusHistory(paymentResult.getPaymentStatus(), "");
 
         if(paymentResult.getPaymentStatus() == PaymentStatus.PAID) {
             // send order confirmation email
@@ -54,7 +54,7 @@ public class OrderService {
                             "price", p.getTotalPrice()
                     )
             ).toList());
-            model.put("subtotal", order.getSubtotal());
+            model.put("subtotal", order.getSubTotal());
             model.put("shippingFee", order.getShippingFee());
             model.put("vatAmount", order.getVatAmount());
             model.put("totalAmount", order.getTotalPrice());
