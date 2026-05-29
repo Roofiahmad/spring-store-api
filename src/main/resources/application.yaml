@@ -54,3 +54,14 @@ order:
   valueAddedTax: 0.11
   shippingFee: 45000
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name:store-ws}
