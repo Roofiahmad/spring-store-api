@@ -1,6 +1,15 @@
 spring:
   datasource:
     url: ${SPRING_DATASOURCE_URL}
+    hikari:
+      # FOR 1000m Core and 1Gi Memory
+      maximum-pool-size: 15
+server:
+  tomcat:
+    threads:
+      # FOR 1000m Core and 1Gi Memory
+      max: 60
+
 websiteUrl: ${WEBSITE_URL}
 frontend:
   urls: ${FRONTEND_URLS}
