@@ -8,7 +8,6 @@ spring:
   data:
     redis:
       host: ${REDIS_SERVICE_HOSTNAME}
-      password: ${REDIS_SERVICE_PASSWORD}
       port: ${REDIS_SERVICE_PORT}
       ssl:
         enabled: true
