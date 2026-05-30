@@ -40,6 +40,7 @@ public class ProductService {
         return new PagedResponse<>(productDtos, metadata);
     }
 
+    @Cacheable(value = "product")
     public ProductDto findProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         return productMapper.toDto(product);

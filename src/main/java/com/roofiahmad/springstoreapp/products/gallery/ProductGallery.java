@@ -3,8 +3,10 @@ package com.roofiahmad.springstoreapp.products.gallery;
 import com.roofiahmad.springstoreapp.products.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
