@@ -9,8 +9,6 @@ spring:
     redis:
       host: ${REDIS_SERVICE_HOSTNAME}
       port: ${REDIS_SERVICE_PORT}
-      ssl:
-        enabled: true
   cache:
     type: redis
 
