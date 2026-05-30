@@ -2,6 +2,7 @@ package com.roofiahmad.springstoreapp.common;
 
 import com.roofiahmad.springstoreapp.auth.AuthenticationFailedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -19,9 +20,7 @@ public class GlobalExceptionHandler  {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponseWrapper<Map<String, String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), error.getDefaultMessage());
-        });
+        ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
         ApiResponseWrapper<Map<String, String>> errorResponse = new ApiResponseWrapper<>(
                 false,
@@ -68,6 +67,7 @@ public class GlobalExceptionHandler  {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponseWrapper<Void>> handleGeneralCrash(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(ApiResponseWrapper.error("An internal processing error occurred: " + ex.getMessage()));
     }
 }
