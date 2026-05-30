@@ -8,7 +8,7 @@ server:
   tomcat:
     threads:
       # FOR 1000m Core and 1Gi Memory
-      max: 60
+      max: 100
 
 websiteUrl: ${WEBSITE_URL}
 frontend:
