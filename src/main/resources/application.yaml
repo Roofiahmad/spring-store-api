@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: spring-store-app
+  jpa:
+    properties:
+      hibernate:
+        hibernate.generate_statistics: true
   jwt:
     secret: ${APP_JWT_SECRET_KEY:dummy_jwt_secret_key}
     accessTokenExpiration: 3600
@@ -65,3 +69,6 @@ management:
   metrics:
     tags:
       application: ${spring.application.name:store-ws}
+    distribution:
+      percentiles-histograms:
+        http.server.requests: true
