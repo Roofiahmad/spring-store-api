@@ -3,7 +3,7 @@ spring:
     url: ${SPRING_DATASOURCE_URL}
     hikari:
       # FOR 1000m Core and 1Gi Memory
-      maximum-pool-size: 15
+      maximum-pool-size: 35
 server:
   tomcat:
     threads:

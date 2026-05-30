@@ -20,7 +20,7 @@ spring:
       max-request-size: 50MB
   datasource:
     hikari:
-      maximum-pool-size: 50
+      maximum-pool-size: 15
       minimum-idle: 20
       connection-timeout: 5000
       idle-timeout: 600000
