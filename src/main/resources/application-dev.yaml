@@ -10,3 +10,7 @@ frontend:
   urls: http://localhost:5173,http://localhost:4173
 orderCancelPath: /order-cancel
 orderSuccessPath: /order-success
+management:
+  health:
+    redis:
+      enabled: false

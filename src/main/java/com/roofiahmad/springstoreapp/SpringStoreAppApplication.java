@@ -1,6 +1,7 @@
 package com.roofiahmad.springstoreapp;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
@@ -15,6 +16,7 @@ public class SpringStoreAppApplication {
 			System.setProperty(entry.getKey(), entry.getValue());
 		});
 
+		SpringApplication.run(SpringStoreAppApplication.class, args);
 	}
 
 }
