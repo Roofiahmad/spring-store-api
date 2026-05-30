@@ -4,11 +4,6 @@ server:
 spring:
   application:
     name: spring-store-app
-  config:
-    activate:
-      on-profile: dev
-  cache:
-    type: none
   jpa:
     properties:
       hibernate:

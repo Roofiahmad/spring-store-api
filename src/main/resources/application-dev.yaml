@@ -3,6 +3,11 @@ spring:
     url: jdbc:mysql://localhost:3306/store?createDatabaseIfNotExist=true
     username: root
     password: basmalah
+  config:
+    activate:
+      on-profile: dev
+  cache:
+    type: none
   jpa:
     show-sql: true
 websiteUrl: http://localhost:5173
