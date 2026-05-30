@@ -32,7 +32,7 @@ public class GlobalResponseWrapper implements org.springframework.web.servlet.mv
 
         String path = request.getURI().getPath();
 
-        if (body instanceof ApiResponseWrapper ||  body == null || path.startsWith("/files") ) {
+        if (body instanceof ApiResponseWrapper ||  body == null || path.startsWith("/files") || path.startsWith("/actuator")  ) {
             return body;
         }
 
