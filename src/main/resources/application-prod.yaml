@@ -23,3 +23,6 @@ frontend:
   urls: ${FRONTEND_URLS}
 orderCancelPath: ${ORDER_CANCEL_PATH}
 orderSuccessPath: ${ORDER_SUCCESS_PATH}
+order:
+  valueAddedTax: 0.11
+  shippingFee: 45000
