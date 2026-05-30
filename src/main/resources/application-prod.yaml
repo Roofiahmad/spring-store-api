@@ -5,6 +5,13 @@ spring:
       # FOR 1000m Core and 1Gi Memory
       maximum-pool-size: 35
       minimum-idle: 10
+  data:
+    redis:
+      host: ${REDIS_SERVICE_NAME}
+      port: ${REDIS_SERVICE_PORT}
+  cache:
+    type: redis
+
 server:
   tomcat:
     threads:

@@ -4,6 +4,7 @@ import com.roofiahmad.springstoreapp.common.BadRequestException;
 import com.roofiahmad.springstoreapp.common.NotFoundException;
 import com.roofiahmad.springstoreapp.products.gallery.ProductGallery;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
 
+    @Cacheable(value = "products")
     public PagedResponse<ProductDto>findAllProducts(Short categoryId, String badge, Pageable pageable) {
         String targetBadge = StringUtils.hasText(badge) ? badge : null;
 

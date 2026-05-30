@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: spring-store-app
+  cache:
+    type: none
   jpa:
     properties:
       hibernate:
