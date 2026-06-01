@@ -29,4 +29,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM Product p WHERE p.id IN :ids ORDER BY p.id ASC")
     List<Product> findAllByIdsWithLock(@Param("ids") List<Long> ids);
+
+
+    long countByStockGreaterThan(int stock);
+
+    @Query("SELECT SUM(p.stock) FROM Product p")
+    Long getTotalStock();
+
+    @Query("SELECT p FROM Product p WHERE p.stock = 0")
+    List<Product> findOutOfStockProducts();
+
+
+    @EntityGraph(attributePaths = {"category"})
+    @Query("""
+    SELECT p FROM Product p 
+    WHERE (:categoryId IS NULL OR p.category.id = :categoryId)
+     """)
+    Page<Product> findByCategory(@Param("categoryId") Short categoryId, Pageable pageable);
+
 }

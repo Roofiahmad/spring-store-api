@@ -1,12 +1,11 @@
 package com.roofiahmad.springstoreapp.products;
 
 import com.roofiahmad.springstoreapp.products.gallery.ProductGallery;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
+)
 public interface ProductMapper {
     @Mapping(source = "category.id", target = "categoryId")
     @Mapping(source = "category.name", target = "categoryName")
@@ -23,7 +22,7 @@ public interface ProductMapper {
     void update(CreateProductRequest request, @MappingTarget Product product);
 
     @AfterMapping
-    default void linkGalleryToParent(CreateProductRequest request, @MappingTarget Product product) {
+    default void linkGalleryToParent(@MappingTarget Product product) {
         if (product.getGallery() != null) {
             for (ProductGallery galleryItem : product.getGallery()) {
                 galleryItem.setProduct(product);
