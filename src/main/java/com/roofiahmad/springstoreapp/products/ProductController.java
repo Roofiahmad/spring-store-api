@@ -18,6 +18,7 @@ public class ProductController {
 
     @GetMapping()
     public ResponseEntity<ApiResponseWrapper<PagedResponse<ProductDto>>> getProducts(
+            @RequestParam(value = "q", required = false) String searchQuery,
             @RequestParam(value = "categoryId", required = false) Short categoryId,
             @RequestParam(value = "badge", required = false) String badge,
             @RequestParam(value = "skip", defaultValue = "0") int skip,
@@ -28,7 +29,7 @@ public class ProductController {
         Sort springSort = Sort.by(sortBy.getDirection(), sortBy.getDatabaseField());
 
         var pageable = PageRequest.of(skip / limit, limit,springSort );
-        var pagedData = productService.findAllProducts(categoryId, badge, pageable);
+        var pagedData = productService.findAllProducts(searchQuery,categoryId, badge, pageable);
 
         return ResponseEntity.ok(ApiResponseWrapper.success(pagedData));
     }

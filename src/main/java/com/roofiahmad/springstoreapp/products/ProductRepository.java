@@ -14,11 +14,13 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @EntityGraph(attributePaths = {"category"})
     @Query("""
-        SELECT p FROM Product p 
-        WHERE (:categoryId IS NULL OR p.category.id = :categoryId)
-          AND (:badge IS NULL OR p.badge = :badge)
-    """)
+    SELECT p FROM Product p 
+    WHERE (:categoryId IS NULL OR p.category.id = :categoryId)
+      AND (:badge IS NULL OR p.badge = :badge)
+      AND (:searchQuery IS NULL OR p.name LIKE CONCAT('%', :searchQuery, '%'))
+""")
     Page<Product> findCatalogProducts(
+            @Param("searchQuery")  String searchQuery,
             @Param("categoryId") Short categoryId,
             @Param("badge") String badge,
             Pageable pageable

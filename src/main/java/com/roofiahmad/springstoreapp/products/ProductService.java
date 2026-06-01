@@ -21,10 +21,10 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
 
     @Cacheable(value = "products")
-    public PagedResponse<ProductDto>findAllProducts(Short categoryId, String badge, Pageable pageable) {
+    public PagedResponse<ProductDto>findAllProducts(String searchQuery, Short categoryId, String badge, Pageable pageable) {
         String targetBadge = StringUtils.hasText(badge) ? badge : null;
 
-        Page<Product> productPage = productRepository.findCatalogProducts(categoryId, targetBadge, pageable);
+        Page<Product> productPage = productRepository.findCatalogProducts(searchQuery,categoryId, targetBadge, pageable);
 
         List<ProductDto> productDtos = productPage.getContent().stream()
                 .map(productMapper::toCatalogDto)
