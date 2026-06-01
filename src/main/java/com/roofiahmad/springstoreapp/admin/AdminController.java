@@ -1,9 +1,12 @@
 package com.roofiahmad.springstoreapp.admin;
 
+import com.roofiahmad.springstoreapp.common.ApiResponseWrapper;
+import com.roofiahmad.springstoreapp.payments.PaymentStatus;
 import com.roofiahmad.springstoreapp.products.PagedResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +30,21 @@ public class AdminController {
         return ResponseEntity.created(uri).body(userDto);
     }
 
-//    @GetMapping("/orders")
-//    public ResponseEntity<ApiResponseWrapper<PagedResponse<?>>> getOrdersAdmin() {
-//        var pageable = PageRequest.of(0 / 8, 8, Sort.by("id").descending() );
-//        var pageData = adminService.getOrdersAdmin(pageable);
-//
-//        return ResponseEntity.ok(ApiResponseWrapper.success(pageData));
-//    }
+    @GetMapping("/orders")
+    public ResponseEntity<ApiResponseWrapper<PagedResponse<?>>> getOrdersAdmin(
+            @RequestParam(value = "", required = false) PaymentStatus status,
+            @PageableDefault(size = 5, page = 0, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        var pageData = adminService.getOrdersAdmin(status,pageable);
+
+        return ResponseEntity.ok(ApiResponseWrapper.success(pageData));
+    }
+
+    @PutMapping("/order/{id}")
+    public ResponseEntity<AdminOrderDto> updateOrderStatus(@PathVariable Long id, @Valid @RequestBody AdminUpdateOrderRequest request) {
+        AdminOrderDto updatedOrder = adminService.updateOrderStatus(id, request);
+        return ResponseEntity.ok(updatedOrder);
+    }
 
     @GetMapping("/statistics")
     public ResponseEntity<AdminStatisticDto> getAdminStatistics() {

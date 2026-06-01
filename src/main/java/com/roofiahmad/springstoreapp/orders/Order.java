@@ -7,6 +7,7 @@ import com.roofiahmad.springstoreapp.users.entity.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -58,10 +59,12 @@ public class Order {
     private String customerPhoneNumber;
 
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @BatchSize(size = 20)
     private Set<OrderItem> items = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("createdAt ASC")
+    @BatchSize(size = 10)
     private List<OrderStatusHistory> statusHistory = new ArrayList<>();
 
     @Column(name = "created_at", insertable = false, updatable = false)

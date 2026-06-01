@@ -1,6 +1,7 @@
 package com.roofiahmad.springstoreapp.orders;
 
 import com.roofiahmad.springstoreapp.payments.PaymentStatus;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +22,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> getOneOrderById(Long orderId);
     List<Order> findByStatus(PaymentStatus status);
+
+    @EntityGraph(attributePaths = {"customer.name"})
+    @Query("""
+    SELECT o FROM Order o 
+    WHERE (:status IS NULL OR o.status = :status) 
+        """)
+    Page<Order> findAllByStatus(PaymentStatus status, Pageable pageable);
 
 }

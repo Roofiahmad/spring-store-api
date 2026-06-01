@@ -20,4 +20,6 @@ public class OrderDto {
     private AddressDto shippingAddress;
     private List<OrderStatusHistoryDto> statusHistory;
     private String customerPhoneNumber;
+    private String customerEmail;
+    private String customerName;
 }

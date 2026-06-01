@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
     @Mapping(source = "shippingAddressSnapshot", target = "shippingAddress")
+    @Mapping(source = "customer.name", target = "customerName")
     OrderDto toDto(Order order);
 
     OrderStatusHistoryDto statusHistoryToDto(OrderStatusHistory orderStatusHistory);
