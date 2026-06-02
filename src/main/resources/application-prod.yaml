@@ -11,6 +11,9 @@ spring:
       port: ${REDIS_SERVICE_PORT}
   cache:
     type: redis
+    redis:
+      time-to-live: 600s
+      cache-null-values: false
   jackson:
     datatype:
       datetime:

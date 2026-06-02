@@ -5,6 +5,9 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD}
   cache:
     type: redis
+    redis:
+      time-to-live: 600s
+      cache-null-values: false
   jpa:
     show-sql: true
 
