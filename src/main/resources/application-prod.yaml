@@ -14,11 +14,6 @@ spring:
     redis:
       time-to-live: 600s
       cache-null-values: false
-  jackson:
-    datatype:
-      datetime:
-        write-dates-as-timestamps: false
-    time-zone: Asia/Jakarta
 
 server:
   tomcat:
