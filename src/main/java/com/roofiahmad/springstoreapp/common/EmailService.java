@@ -16,7 +16,7 @@ import java.util.Map;
 public class EmailService {
 
     private final JavaMailSender mailSender;
-    private TemplateEngine templateEngine;
+    private final TemplateEngine templateEngine;
 
     public void sendOrderEmail(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
         Context context = new Context();

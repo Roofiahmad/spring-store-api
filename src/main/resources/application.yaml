@@ -41,11 +41,12 @@ spring:
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     properties:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
-          required: true
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 management:
   endpoints:
