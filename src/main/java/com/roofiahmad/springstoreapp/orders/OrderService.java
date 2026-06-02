@@ -48,6 +48,7 @@ public class OrderService {
     @Transactional
     public void updatePaymentStatus(PaymentResult paymentResult) {
         var order = orderRepository.findById(paymentResult.getOrderId()).orElseThrow(OrderNotFoundException::new);
+        System.out.println(paymentResult.getPaymentStatus() + " payment status");
         order.insertStatusHistory(paymentResult.getPaymentStatus(), "");
 
         if(paymentResult.getPaymentStatus() == PaymentStatus.PAID) {
@@ -70,6 +71,7 @@ public class OrderService {
             try {
                 emailService.sendOrderEmail(order.getCustomerEmail(), "ORDER-" + order.getId(), model);
             } catch (MessagingException e) {
+                System.out.println(e.getMessage());
                 throw new RuntimeException(e);
             }
         }

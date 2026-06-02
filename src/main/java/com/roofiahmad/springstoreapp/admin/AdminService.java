@@ -90,9 +90,6 @@ public class AdminService {
                 .map(adminMapper::toAdminOrderDto)
                 .toList();
 
-        System.out.println(orderPendingList.size() + " size order pending list");
-        System.out.println(listOutOfStockProducts.size() + " size out of stock products");
-
         return AdminStatisticDto.builder()
                 .productShortages(productOutOfStockDto)
                 .orderPendingFulfillment(orderPendingDto)
