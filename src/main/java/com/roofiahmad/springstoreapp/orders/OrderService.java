@@ -3,6 +3,11 @@ package com.roofiahmad.springstoreapp.orders;
 import com.roofiahmad.springstoreapp.common.EmailService;
 import com.roofiahmad.springstoreapp.payments.PaymentResult;
 import com.roofiahmad.springstoreapp.payments.PaymentStatus;
+import com.roofiahmad.springstoreapp.products.Product;
+import com.roofiahmad.springstoreapp.products.ProductRepository;
+import com.roofiahmad.springstoreapp.reviews.ProductReview;
+import com.roofiahmad.springstoreapp.reviews.ProductReviewRepository;
+import com.roofiahmad.springstoreapp.utils.Utils;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +19,7 @@ import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +27,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final EmailService emailService;
+    private final ProductRepository productRepository;
+    private final ProductReviewRepository productReviewRepository;
 
     public List<OrderDto> getAllOrders(Long userId) {
         var orders = orderRepository.getOrdersByCustomer(userId, PageRequest.of(0, 4));
@@ -65,8 +73,61 @@ public class OrderService {
                 throw new RuntimeException(e);
             }
         }
-
-
         orderRepository.save(order);
     }
+
+
+    public OrderDto confirmOrderReceived(Long customerId, Long orderId) {
+        var order = orderRepository.getOneOrderWithItems(orderId).orElseThrow(OrderNotFoundException::new);
+
+        if(!order.isPlacedBy(customerId)) {
+            throw new AccessDeniedException("You do not have permission to access this order");
+        }
+
+        order.insertStatusHistory(PaymentStatus.DELIVERED, "Order receiver by " + Utils.getUserPrincipal().getName());
+        orderRepository.save(order);
+
+        return orderMapper.toDto(order);
+    }
+
+    @Transactional
+    public void addProductReview(Long customerId, Long orderId, OrderReviewRequest request) {
+
+        var order = orderRepository.getOneOrderWithItems(orderId)
+                .orElseThrow(OrderNotFoundException::new);
+
+        if (!order.isPlacedBy(customerId)) {
+            throw new AccessDeniedException("You do not have permission to access this order");
+        }
+
+        Map<Long, Product> purchasedProductsMap = order.getItems().stream()
+                .map(OrderItem::getProduct)
+                .collect(Collectors.toMap(
+                        Product::getId,
+                        product -> product,
+                        (existing, replacement) -> existing
+                ));
+
+        boolean allProductsBelongToOrder = request.getReviews().stream()
+                .allMatch(review -> purchasedProductsMap.containsKey(review.getProductId()));
+
+        if (!allProductsBelongToOrder) {
+            throw new AccessDeniedException("Some products were not purchased in this order");
+        }
+
+        request.getReviews().forEach(review -> {
+            ProductReview productReview = new ProductReview();
+            Product product = purchasedProductsMap.get(review.getProductId());
+
+            productReview.setComment(review.getComment());
+            productReview.setRating(review.getRating());
+            productReview.setUser(order.getCustomer());
+            productReview.setProduct(product);
+            productReview.setVerifiedPurchase(true);
+            productReview.setOrder(order);
+
+            productReviewRepository.save(productReview);
+        });
+    }
+
 }

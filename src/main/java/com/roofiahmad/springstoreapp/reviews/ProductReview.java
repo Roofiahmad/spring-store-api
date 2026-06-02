@@ -1,5 +1,6 @@
 package com.roofiahmad.springstoreapp.reviews;
 
+import com.roofiahmad.springstoreapp.orders.Order;
 import com.roofiahmad.springstoreapp.products.Product;
 import com.roofiahmad.springstoreapp.users.entity.User;
 import jakarta.persistence.*;
@@ -29,6 +30,10 @@ public class ProductReview {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_reviews_user"))
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
 
     @Column(name = "rating", nullable = false)
     private Integer rating;

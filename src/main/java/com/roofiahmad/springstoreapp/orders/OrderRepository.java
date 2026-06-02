@@ -21,6 +21,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> getOneOrderWithItems(@Param("orderId") Long orderId);
 
     Optional<Order> getOneOrderById(Long orderId);
+
     List<Order> findByStatus(PaymentStatus status);
 
     @EntityGraph(attributePaths = {"customer.name"})

@@ -12,6 +12,7 @@ import com.roofiahmad.springstoreapp.products.PagedResponseMetadata;
 import com.roofiahmad.springstoreapp.products.Product;
 import com.roofiahmad.springstoreapp.products.ProductRepository;
 import com.roofiahmad.springstoreapp.users.repository.UserRepository;
+import com.roofiahmad.springstoreapp.utils.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -71,8 +72,7 @@ public class AdminService {
                             + order.getStatus() + "] to [" + request.getStatus() + "]."
             );
         }
-
-        order.setStatus(request.getStatus());
+        order.insertStatusHistory(request.getStatus(), "updated by " + Utils.getUserPrincipal().getName());
         order = orderRepository.save(order);
         return adminMapper.toAdminOrderDto(order);
     }
