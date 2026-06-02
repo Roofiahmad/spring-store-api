@@ -38,6 +38,10 @@ public class OrderService {
     public OrderDto getOrder(Long customerId, Long orderId) {
         var order = orderRepository.getOneOrderWithItems(orderId).orElseThrow(OrderNotFoundException::new);
 
+        order.getStatusHistory().forEach(status -> {
+            System.out.println(status.getStatus() + " : " + status.getCreatedAt());
+        });
+
         if (!order.isPlacedBy(customerId)) {
             throw new AccessDeniedException("You do not have permission to access this order");
         }
