@@ -11,6 +11,11 @@ spring:
       port: ${REDIS_SERVICE_PORT}
   cache:
     type: redis
+  jackson:
+    datatype:
+      datetime:
+        write-dates-as-timestamps: false
+    time-zone: Asia/Jakarta
 
 server:
   tomcat:
