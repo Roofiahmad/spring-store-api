@@ -1,4 +1,5 @@
 FROM maven:3.9.12-eclipse-temurin-25-alpine AS build
+
 WORKDIR /app
 
 COPY pom.xml .
@@ -12,6 +13,8 @@ WORKDIR /app
 
 RUN apk update && apk upgrade --no-cache && \
     addgroup -S springgroup && adduser -S springuser -G springgroup
+
+ENV TZ=Asia/Jakarta
 
 COPY --from=build /app/target/*.jar app.jar
 
