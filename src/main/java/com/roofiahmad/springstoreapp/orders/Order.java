@@ -59,6 +59,7 @@ public class Order {
     private String customerPhoneNumber;
 
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OrderBy("id DESC ")
     @BatchSize(size = 20)
     private Set<OrderItem> items = new LinkedHashSet<>();
 

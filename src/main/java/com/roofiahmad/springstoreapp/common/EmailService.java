@@ -32,7 +32,9 @@ public class EmailService {
         helper.setSubject(subject);
         helper.setText(htmlContent, true);
 
+        System.out.println("Sending email...");
         mailSender.send(message);
+        System.out.println("Email sent!");
     }
 
 }
