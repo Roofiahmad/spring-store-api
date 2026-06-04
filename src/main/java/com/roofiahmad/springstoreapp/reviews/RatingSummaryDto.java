@@ -3,9 +3,14 @@ package com.roofiahmad.springstoreapp.reviews;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
-public class RatingSummaryDto {
+public class RatingSummaryDto implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private Long reviewCount;
     private Double averageRating;

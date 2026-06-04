@@ -4,7 +4,9 @@ import com.roofiahmad.springstoreapp.common.BadRequestException;
 import com.roofiahmad.springstoreapp.common.NotFoundException;
 import com.roofiahmad.springstoreapp.products.gallery.ProductGallery;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
 
-    @Cacheable(value = "products")
+    @Cacheable(value = "product-lists")
     public PagedResponse<ProductDto>findAllProducts(String searchQuery, Short categoryId, String badge, Pageable pageable) {
         String targetBadge = StringUtils.hasText(badge) ? badge : null;
 
@@ -40,12 +42,13 @@ public class ProductService {
         return new PagedResponse<>(productDtos, metadata);
     }
 
-    @Cacheable(value = "product")
+    @Cacheable(value = "product-details", key = "#id")
     public ProductDto findProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         return productMapper.toDto(product);
     }
 
+    @CacheEvict(value = "product-lists", allEntries = true)
     public ProductDto createProduct(CreateProductRequest request) {
         if(request.getCategoryId() == null) {
             throw new BadRequestException("Category id is required");
@@ -63,6 +66,10 @@ public class ProductService {
         return productMapper.toDto(productEntity);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "product-details", key = "#productId"),
+            @CacheEvict(value = "product-lists", allEntries = true)
+    })
     @Transactional
     public ProductDto updateProduct(Long productId, CreateProductRequest request) {
         if(productId == null) {
@@ -91,6 +98,11 @@ public class ProductService {
         return productMapper.toDto(product);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "product-details", key = "#productId"),
+            @CacheEvict(value = "product-lists", allEntries = true)
+    })
+    @Transactional
     public void deleteProduct(Long productId) {
         if(productId == null) {
             throw new BadRequestException("Product id is required");

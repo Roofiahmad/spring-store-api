@@ -3,10 +3,12 @@ package com.roofiahmad.springstoreapp;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableAsync
 @SpringBootApplication
+@EnableCaching
 public class SpringStoreAppApplication {
 
 	 static void main(String[] args) {
@@ -14,9 +16,7 @@ public class SpringStoreAppApplication {
 				.ignoreIfMissing()
 				.load();
 
-		dotenv.entries().forEach(entry -> {
-			System.setProperty(entry.getKey(), entry.getValue());
-		});
+		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 
 		SpringApplication.run(SpringStoreAppApplication.class, args);
 	}

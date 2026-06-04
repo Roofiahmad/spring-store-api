@@ -4,8 +4,8 @@ import com.roofiahmad.springstoreapp.services.MinioService;
 import io.minio.StatObjectResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,12 +37,14 @@ public class UploadController {
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(Map.of("error", "Upload failed: " + e.getMessage()));
         }
     }
 
     @GetMapping("/{filename}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String filename) {
+    public ResponseEntity<?> downloadFile(@PathVariable String filename) {
         try {
             InputStream stream = minioService.getFileStream(filename);
             StatObjectResponse metadata = minioService.getFileMetadata(filename);
@@ -52,7 +54,9 @@ public class UploadController {
                     .contentType(MediaType.parseMediaType(metadata.contentType()))
                     .body(new InputStreamResource(stream));
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(new ApiResponseWrapper(false,"File not found or storage error: " + filename, false));
         }
     }
 }
