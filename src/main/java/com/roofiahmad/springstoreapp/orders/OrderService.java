@@ -57,7 +57,7 @@ public class OrderService {
 
             OrderEvent orderEvent = OrderEvent.builder().customerName(order.getCustomer().getName())
                     .customerEmail(order.getCustomerEmail())
-                    .orderNumber("ORD-" + order.getId())
+                    .orderNumber(order.getId().toString())
                     .items(itemPayloads)
                     .subtotal(order.getSubTotal().doubleValue())
                     .shippingFee(order.getShippingFee().doubleValue())
