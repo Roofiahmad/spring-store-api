@@ -15,6 +15,7 @@ import com.roofiahmad.springstoreapp.products.Product;
 import com.roofiahmad.springstoreapp.products.ProductRepository;
 import com.roofiahmad.springstoreapp.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class CheckoutService {
 
     private final UserRepository userRepository;
@@ -96,6 +98,7 @@ public class CheckoutService {
     }
 
     public void handleWebhookEvent(WebhookRequest request) {
+        log.info("✅ WebhookHandler triggered: {}", request);
        paymentGateway.parseWebhookRequest(request).ifPresent(orderService::updatePaymentStatus);
     }
 }
