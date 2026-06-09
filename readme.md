@@ -79,4 +79,33 @@ MAIL_USERNAME=
 MAIL_PASSWORD=
 MAIL_HOST=
 MAIL_PORT=
-MAIL_FROM=store@roofiahmad-homelabs.my.id
+MAIL_FROM=store@roofiahmad-homelabs.my.id 
+```
+## 📊 Performance & Stress Testing Results
+
+To validate the stability, concurrency models, and automated elasticity of the cluster, a rigorous 45-minute multi-stage stress test was executed using the **k6 load testing engine**.
+
+### 🏃‍♂️ Test Parameters & Execution
+* **Maximum Concurrency:** 3,000 Concurrent Virtual Users (VUs)
+* **Total Requests Processed:** 2,731,387 successful HTTP executions
+* **Overall Error Rate:** 0.00% (Zero failed requests)
+* **Sustained Throughput:** ~1,600 Requests Per Second (RPS) at peak
+
+### 📈 Target Latency Benchmarks (Pass/Fail Thresholds)
+| Metric | Target Threshold | Actual Result | Status |
+| :--- |:-----------------| :--- | :--- |
+| **p(50) - Median** | < 100 ms         | **8.56 ms** | PASS ✅ |
+| **p(95)** | < 700 ms         | **117.71 ms** | PASS ✅ |
+| **p(99)** | < 1000 ms        | **627.84 ms** | PASS ✅ |
+
+### 🔍 Telemetry & Infrastructure Insights
+
+#### 1. System Throughput & Database Caching
+![k6 CLI Result](./stress-test-result.png)
+*The k6 engine confirmed a massive 1,010 RPS average throughout the entire 45-minute cycle, peaking over 1,600+ RPS without a single connection drop.*
+
+#### 2. Kubernetes Elasticity & JVM Warmup Profile
+![Grafana Dashboard](./grafana-result.png)
+* **Horizontal Pod Autoscaling (HPA):** As traffic passed the 2,000 VU mark, the HPA triggered seamlessly. Pod #2 and Pod #3 spun up dynamically to split CPU loads evenly at ~55% saturation.
+* **JIT Warmup Mitigation:** Staged k6 ramp-up plateaus provided a 5-minute initialization window for new pods to pass startup probes and complete JIT compilation entirely in memory, effectively preventing "cold start" latency spikes.
+* **Cache Alignment:** Grafana metrics verified a strict 1:1 correlation between incoming API requests and Redis Commands Per Second (CPS), ensuring 99.9% of catalog traffic was intercepted by the sidecar cache.
