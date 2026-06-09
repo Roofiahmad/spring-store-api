@@ -101,11 +101,11 @@ To validate the stability, concurrency models, and automated elasticity of the c
 ### 🔍 Telemetry & Infrastructure Insights
 
 #### 1. System Throughput & Database Caching
-![k6 CLI Result](./stress-test-result.png)
+![k6 CLI Result](/stress-test-result.png)
 *The k6 engine confirmed a massive 1,010 RPS average throughout the entire 45-minute cycle, peaking over 1,600+ RPS without a single connection drop.*
 
 #### 2. Kubernetes Elasticity & JVM Warmup Profile
-![Grafana Dashboard](./grafana-result.png)
+![Grafana Dashboard](/grafana-result.png)
 * **Horizontal Pod Autoscaling (HPA):** As traffic passed the 2,000 VU mark, the HPA triggered seamlessly. Pod #2 and Pod #3 spun up dynamically to split CPU loads evenly at ~55% saturation.
 * **JIT Warmup Mitigation:** Staged k6 ramp-up plateaus provided a 5-minute initialization window for new pods to pass startup probes and complete JIT compilation entirely in memory, effectively preventing "cold start" latency spikes.
 * **Cache Alignment:** Grafana metrics verified a strict 1:1 correlation between incoming API requests and Redis Commands Per Second (CPS), ensuring 99.9% of catalog traffic was intercepted by the sidecar cache.
