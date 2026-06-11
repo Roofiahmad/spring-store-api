@@ -1,4 +1,4 @@
-FROM maven:3.9.12-eclipse-temurin-25-alpine AS build
+FROM maven:3.9.12-amazoncorretto-25-alpine AS build
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN mvn dependency:resolve-plugins dependency:resolve -B
 COPY src ./src
 RUN mvn package -DskipTests -B
 
-FROM eclipse-temurin:25-jre-alpine
+FROM amazoncorretto:25-alpine
 WORKDIR /app
 
 RUN apk update && apk upgrade --no-cache && \
