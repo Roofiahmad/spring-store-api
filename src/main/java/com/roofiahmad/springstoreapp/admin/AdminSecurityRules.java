@@ -1,7 +1,7 @@
 package com.roofiahmad.springstoreapp.admin;
 
-import com.roofiahmad.springstoreapp.auth.Role;
-import com.roofiahmad.springstoreapp.common.SecurityRules;
+import com.roofiahmad.springstoreapp.auth.constant.Role;
+import com.roofiahmad.springstoreapp.common.security.SecurityRules;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;

@@ -1,18 +1,19 @@
 package com.roofiahmad.springstoreapp.admin;
 
-import com.roofiahmad.springstoreapp.auth.Role;
-import com.roofiahmad.springstoreapp.common.NotFoundException;
-import com.roofiahmad.springstoreapp.orders.Order;
-import com.roofiahmad.springstoreapp.orders.OrderDto;
-import com.roofiahmad.springstoreapp.orders.OrderMapper;
-import com.roofiahmad.springstoreapp.orders.OrderRepository;
-import com.roofiahmad.springstoreapp.payments.PaymentStatus;
-import com.roofiahmad.springstoreapp.products.PagedResponse;
-import com.roofiahmad.springstoreapp.products.PagedResponseMetadata;
-import com.roofiahmad.springstoreapp.products.Product;
-import com.roofiahmad.springstoreapp.products.ProductRepository;
-import com.roofiahmad.springstoreapp.users.repository.UserRepository;
-import com.roofiahmad.springstoreapp.utils.Utils;
+import com.roofiahmad.springstoreapp.admin.dto.*;
+import com.roofiahmad.springstoreapp.auth.constant.Role;
+import com.roofiahmad.springstoreapp.common.exception.NotFoundException;
+import com.roofiahmad.springstoreapp.order.Order;
+import com.roofiahmad.springstoreapp.order.dto.OrderDto;
+import com.roofiahmad.springstoreapp.order.OrderMapper;
+import com.roofiahmad.springstoreapp.order.OrderRepository;
+import com.roofiahmad.springstoreapp.payment.PaymentStatus;
+import com.roofiahmad.springstoreapp.common.dto.PagedResponse;
+import com.roofiahmad.springstoreapp.common.dto.PagedResponseMetadata;
+import com.roofiahmad.springstoreapp.product.Product;
+import com.roofiahmad.springstoreapp.product.ProductRepository;
+import com.roofiahmad.springstoreapp.user.repository.UserRepository;
+import com.roofiahmad.springstoreapp.util.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -97,7 +98,7 @@ public class AdminService {
                 .listedProducts(listedProducts).build();
     }
 
-    public PagedResponse<AdminProductDto> getAdminProducts(Short categoryId,Pageable pageable) {
+    public PagedResponse<AdminProductDto> getAdminProducts(Short categoryId, Pageable pageable) {
         Page<Product> productPage = productRepository.findByCategory(categoryId,pageable);
 
         List<AdminProductDto> productDtos = productPage.getContent().stream()

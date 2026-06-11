@@ -1,9 +1,12 @@
 package com.roofiahmad.springstoreapp.auth;
 
-import com.roofiahmad.springstoreapp.common.NotFoundException;
-import com.roofiahmad.springstoreapp.users.entity.User;
-import com.roofiahmad.springstoreapp.users.mappers.UserMapper;
-import com.roofiahmad.springstoreapp.users.repository.UserRepository;
+import com.roofiahmad.springstoreapp.auth.dto.LoginRequest;
+import com.roofiahmad.springstoreapp.auth.dto.LoginResponse;
+import com.roofiahmad.springstoreapp.auth.jwt.JwtService;
+import com.roofiahmad.springstoreapp.common.exception.NotFoundException;
+import com.roofiahmad.springstoreapp.user.entity.User;
+import com.roofiahmad.springstoreapp.user.mapper.UserMapper;
+import com.roofiahmad.springstoreapp.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

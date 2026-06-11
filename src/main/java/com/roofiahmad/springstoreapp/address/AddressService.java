@@ -1,9 +1,12 @@
 package com.roofiahmad.springstoreapp.address;
 
+import com.roofiahmad.springstoreapp.address.dto.AddressDto;
+import com.roofiahmad.springstoreapp.address.dto.CreateAddressRequest;
+import com.roofiahmad.springstoreapp.address.dto.UpdateAddressRequest;
 import com.roofiahmad.springstoreapp.auth.AuthenticationFailedException;
-import com.roofiahmad.springstoreapp.common.NotFoundException;
-import com.roofiahmad.springstoreapp.users.repository.UserRepository;
-import com.roofiahmad.springstoreapp.utils.Utils;
+import com.roofiahmad.springstoreapp.common.exception.NotFoundException;
+import com.roofiahmad.springstoreapp.user.repository.UserRepository;
+import com.roofiahmad.springstoreapp.util.Utils;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Service;

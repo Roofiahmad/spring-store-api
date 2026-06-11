@@ -1,5 +1,6 @@
 package com.roofiahmad.springstoreapp.auth;
 
+import com.roofiahmad.springstoreapp.auth.constant.Role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

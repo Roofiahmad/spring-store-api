@@ -1,5 +1,7 @@
 package com.roofiahmad.springstoreapp.profile;
 
+import com.roofiahmad.springstoreapp.profile.dto.ProfileDto;
+import com.roofiahmad.springstoreapp.profile.dto.UpdateProfileRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

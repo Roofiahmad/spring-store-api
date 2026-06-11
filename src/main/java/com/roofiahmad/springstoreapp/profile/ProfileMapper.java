@@ -1,6 +1,8 @@
 package com.roofiahmad.springstoreapp.profile;
 
-import com.roofiahmad.springstoreapp.users.entity.User;
+import com.roofiahmad.springstoreapp.profile.dto.ProfileDto;
+import com.roofiahmad.springstoreapp.profile.dto.UpdateProfileRequest;
+import com.roofiahmad.springstoreapp.user.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

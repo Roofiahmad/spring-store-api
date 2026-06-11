@@ -1,7 +1,7 @@
 package com.roofiahmad.springstoreapp.address;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.roofiahmad.springstoreapp.users.entity.User;
+import com.roofiahmad.springstoreapp.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

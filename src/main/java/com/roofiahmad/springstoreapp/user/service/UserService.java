@@ -1,0 +1,97 @@
+package com.roofiahmad.springstoreapp.user.service;
+
+import com.roofiahmad.springstoreapp.auth.constant.Role;
+import com.roofiahmad.springstoreapp.cart.Cart;
+import com.roofiahmad.springstoreapp.cart.CartRepository;
+import com.roofiahmad.springstoreapp.common.exception.BadRequestException;
+import com.roofiahmad.springstoreapp.common.exception.NotFoundException;
+import com.roofiahmad.springstoreapp.profile.Profile;
+import com.roofiahmad.springstoreapp.profile.ProfileRepository;
+import com.roofiahmad.springstoreapp.user.dto.ChangePasswordRequest;
+import com.roofiahmad.springstoreapp.user.dto.RegisterUserRequest;
+import com.roofiahmad.springstoreapp.user.dto.UpdateUserRequest;
+import com.roofiahmad.springstoreapp.user.dto.UserDto;
+import com.roofiahmad.springstoreapp.user.mapper.UserMapper;
+import com.roofiahmad.springstoreapp.user.repository.UserRepository;
+import com.roofiahmad.springstoreapp.util.Utils;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Set;
+
+@AllArgsConstructor
+@Service
+public class UserService {
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
+    private final ProfileRepository profileRepository;
+
+    public List<UserDto> getAllUsers(String sort) {
+        if(!Set.of("name", "email").contains(sort))
+            sort = "name";
+
+        return userRepository.findAllUsersAsDto(Sort.by(sort));
+
+    }
+
+    public UserDto getUser(Long id) {
+        var user = userRepository.findById(id).orElseThrow(()-> new NotFoundException("User not found"));
+       return userMapper.toDto(user);
+    }
+
+    @Transactional
+    public UserDto registerUser(RegisterUserRequest request) {
+        if(userRepository.existsByEmail(request.getEmail())){
+            throw new RuntimeException("Email already registered");
+        }
+
+        var userEntity = userMapper.toEntity(request);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userEntity.setRole(Role.USER);
+
+        userEntity = userRepository.save(userEntity);
+
+        Profile profile = new Profile();
+        profile.setUser(userEntity);
+        profileRepository.save(profile);
+
+        Cart cart = new Cart();
+        cart.setUser(userEntity);
+        cartRepository.save(cart);
+
+        return userMapper.toDto(userEntity);
+    }
+
+    public UserDto updateUser(UpdateUserRequest request) {
+        var userPrincipal = Utils.getUserPrincipal();
+        var user = userRepository.findById(userPrincipal.getId()).orElseThrow(()-> new NotFoundException("User not found"));
+
+        userMapper.update(request, user);
+        userRepository.save(user);
+        return userMapper.toDto(user);
+    }
+
+    public void deleteUser() {
+        var userPrincipal = Utils.getUserPrincipal();
+        var userEntity = userRepository.findById(userPrincipal.getId()).orElseThrow(()-> new NotFoundException("User not found"));
+        userRepository.delete(userEntity);
+    }
+
+    public void changePassword(ChangePasswordRequest request)  {
+        var userPrincipal = Utils.getUserPrincipal();
+        var user = userRepository.findById(userPrincipal.getId()).orElseThrow(()-> new NotFoundException("User not found"));
+
+        if(!passwordEncoder.matches(request.getOldPassword(), user.getPassword())){
+            throw new BadRequestException("Old password does not match");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
+}

@@ -1,5 +1,8 @@
 package com.roofiahmad.springstoreapp.address;
 
+import com.roofiahmad.springstoreapp.address.dto.AddressDto;
+import com.roofiahmad.springstoreapp.address.dto.CreateAddressRequest;
+import com.roofiahmad.springstoreapp.address.dto.UpdateAddressRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;

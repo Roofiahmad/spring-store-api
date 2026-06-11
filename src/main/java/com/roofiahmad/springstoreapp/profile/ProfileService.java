@@ -1,8 +1,10 @@
 package com.roofiahmad.springstoreapp.profile;
 
-import com.roofiahmad.springstoreapp.common.NotFoundException;
-import com.roofiahmad.springstoreapp.users.repository.UserRepository;
-import com.roofiahmad.springstoreapp.utils.Utils;
+import com.roofiahmad.springstoreapp.common.exception.NotFoundException;
+import com.roofiahmad.springstoreapp.profile.dto.ProfileDto;
+import com.roofiahmad.springstoreapp.profile.dto.UpdateProfileRequest;
+import com.roofiahmad.springstoreapp.user.repository.UserRepository;
+import com.roofiahmad.springstoreapp.util.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

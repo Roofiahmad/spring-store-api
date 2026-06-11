@@ -1,8 +1,12 @@
 package com.roofiahmad.springstoreapp.admin;
 
-import com.roofiahmad.springstoreapp.orders.Order;
-import com.roofiahmad.springstoreapp.products.Product;
-import com.roofiahmad.springstoreapp.users.entity.User;
+import com.roofiahmad.springstoreapp.admin.dto.AdminDto;
+import com.roofiahmad.springstoreapp.admin.dto.AdminOrderDto;
+import com.roofiahmad.springstoreapp.admin.dto.AdminProductDto;
+import com.roofiahmad.springstoreapp.admin.dto.RegisterAdminRequest;
+import com.roofiahmad.springstoreapp.order.Order;
+import com.roofiahmad.springstoreapp.product.Product;
+import com.roofiahmad.springstoreapp.user.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
