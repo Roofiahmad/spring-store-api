@@ -1,9 +1,9 @@
 package com.roofiahmad.springstoreapp.product;
 
-import com.roofiahmad.springstoreapp.common.exception.BadRequestException;
+import com.roofiahmad.springstoreapp.web.exception.BadRequestException;
 import com.roofiahmad.springstoreapp.common.exception.NotFoundException;
-import com.roofiahmad.springstoreapp.common.dto.PagedResponse;
-import com.roofiahmad.springstoreapp.common.dto.PagedResponseMetadata;
+import com.roofiahmad.springstoreapp.web.dto.PagedResponse;
+import com.roofiahmad.springstoreapp.web.dto.PagedResponseMetadata;
 import com.roofiahmad.springstoreapp.product.category.CategoryRepository;
 import com.roofiahmad.springstoreapp.product.dto.CreateProductRequest;
 import com.roofiahmad.springstoreapp.product.dto.ProductDto;

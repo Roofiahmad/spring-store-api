@@ -1,7 +1,7 @@
 package com.roofiahmad.springstoreapp.product;
 
-import com.roofiahmad.springstoreapp.common.dto.ApiResponseWrapper;
-import com.roofiahmad.springstoreapp.common.dto.PagedResponse;
+import com.roofiahmad.springstoreapp.web.dto.ApiResponseWrapper;
+import com.roofiahmad.springstoreapp.web.dto.PagedResponse;
 import com.roofiahmad.springstoreapp.product.dto.CreateProductRequest;
 import com.roofiahmad.springstoreapp.product.dto.ProductDto;
 import io.swagger.v3.oas.annotations.tags.Tag;

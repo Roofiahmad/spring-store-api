@@ -1,7 +1,7 @@
 package com.roofiahmad.springstoreapp.auth.config;
 
 import com.roofiahmad.springstoreapp.auth.jwt.JwtAuthenticationFilter;
-import com.roofiahmad.springstoreapp.common.security.SecurityRules;
+import com.roofiahmad.springstoreapp.security.config.SecurityRules;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

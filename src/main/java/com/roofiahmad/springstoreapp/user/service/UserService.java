@@ -3,7 +3,7 @@ package com.roofiahmad.springstoreapp.user.service;
 import com.roofiahmad.springstoreapp.auth.constant.Role;
 import com.roofiahmad.springstoreapp.cart.Cart;
 import com.roofiahmad.springstoreapp.cart.CartRepository;
-import com.roofiahmad.springstoreapp.common.exception.BadRequestException;
+import com.roofiahmad.springstoreapp.web.exception.BadRequestException;
 import com.roofiahmad.springstoreapp.common.exception.NotFoundException;
 import com.roofiahmad.springstoreapp.profile.Profile;
 import com.roofiahmad.springstoreapp.profile.ProfileRepository;

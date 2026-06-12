@@ -1,6 +1,6 @@
 package com.roofiahmad.springstoreapp.payment;
 
-import com.roofiahmad.springstoreapp.common.security.SecurityRules;
+import com.roofiahmad.springstoreapp.security.config.SecurityRules;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;

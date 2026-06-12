@@ -10,7 +10,7 @@ import com.roofiahmad.springstoreapp.payment.PaymentStatus;
 import com.roofiahmad.springstoreapp.product.Product;
 import com.roofiahmad.springstoreapp.review.ProductReview;
 import com.roofiahmad.springstoreapp.review.ProductReviewRepository;
-import com.roofiahmad.springstoreapp.common.service.OrderEventPublisher;
+import com.roofiahmad.springstoreapp.order.event.OrderEventPublisher;
 import com.roofiahmad.springstoreapp.util.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;

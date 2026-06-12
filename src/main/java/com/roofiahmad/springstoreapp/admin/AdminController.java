@@ -1,9 +1,9 @@
 package com.roofiahmad.springstoreapp.admin;
 
 import com.roofiahmad.springstoreapp.admin.dto.*;
-import com.roofiahmad.springstoreapp.common.dto.ApiResponseWrapper;
+import com.roofiahmad.springstoreapp.web.dto.ApiResponseWrapper;
 import com.roofiahmad.springstoreapp.payment.PaymentStatus;
-import com.roofiahmad.springstoreapp.common.dto.PagedResponse;
+import com.roofiahmad.springstoreapp.web.dto.PagedResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
