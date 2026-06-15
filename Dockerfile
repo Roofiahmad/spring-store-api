@@ -22,4 +22,4 @@ RUN chown springuser:springgroup app.jar
 
 USER springuser
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","--enable-native-access=ALL-UNNAMED", "-jar", "app.jar"]

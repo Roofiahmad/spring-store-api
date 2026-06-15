@@ -83,3 +83,9 @@ minio:
 order:
   valueAddedTax: 0.11
   shippingFee: 45000
+  storePostalCode: 10270
+
+biteship:
+  api:
+    baseurl: ${BITESHIP_BASEURL}
+    secret-key: ${BITESHIP_SECRETKEY}
