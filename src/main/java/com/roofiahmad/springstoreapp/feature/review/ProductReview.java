@@ -1,5 +1,6 @@
 package com.roofiahmad.springstoreapp.feature.review;
 
+import com.roofiahmad.springstoreapp.feature.cart.dto.ProductReviewRequest;
 import com.roofiahmad.springstoreapp.feature.order.Order;
 import com.roofiahmad.springstoreapp.feature.product.Product;
 import com.roofiahmad.springstoreapp.feature.user.entity.User;
@@ -15,7 +16,8 @@ import java.time.ZonedDateTime;
         }
 )
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ProductReview {
 
@@ -59,5 +61,15 @@ public class ProductReview {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = ZonedDateTime.now();
+    }
+
+    public ProductReview(ProductReviewRequest request, Order order, Product product) {
+        this.comment = request.getComment();
+        this.rating = request.getRating();
+        this.user = order.getCustomer();
+        this.product = product;
+        this.isVerifiedPurchase = true;
+        this.order = order;
+
     }
 }

@@ -55,7 +55,6 @@ public class CheckoutService {
     private final AddressMapper addressMapper;
     private final ShippingProvider shippingProvider;
 
-
     @Value("${order.valueAddedTax}")
     private BigDecimal vatRate;
 
@@ -76,24 +75,8 @@ public class CheckoutService {
                 .orElseThrow(() -> new NotFoundException("Address not found"));
         AddressDto addressSnapshot = addressMapper.toAddressDto(userAddress);
 
-
-
-        int productTotalWeight = cart.getItems().stream()
-                .mapToInt(item -> item.getProduct().getWeight() * item.getQuantity())
-                .sum();
-
-        List<ItemRequest> items = cart.getItems().stream().map((cartItem)->
-                new ItemRequest(
-                        cartItem.getProduct().getName(),
-                        cartItem.getProduct().getDescription(),
-                        cartItem.getProduct().getPrice().longValue(),
-                        cartItem.getProduct().getLength(),
-                        cartItem.getProduct().getWidth(),
-                        cartItem.getProduct().getHeight(),
-                        cartItem.getProduct().getWeight(),
-                        cartItem.getQuantity()
-                )
-        ).toList();
+        int productTotalWeight = cart.calculateTotalWeight();
+        List<ItemRequest> items = cart.getItems().stream().map(ItemRequest::new).toList();
 
         ShippingQuery shippingQuery = new ShippingQuery(storePostalCode,Integer.parseInt(addressSnapshot.getZip()),items, productTotalWeight);
         AvailableRate rate = shippingProvider.fetchAvailableRates(shippingQuery).stream()
@@ -102,9 +85,7 @@ public class CheckoutService {
                 .orElseThrow(() -> new RuntimeException("No reguler shipping services available at all"));
 
 
-        var order = Order.fromCart(cart, customer, addressSnapshot, BigDecimal.valueOf(rate.costIdr()), vatRate);
-        order.setCustomerEmail(request.getEmail());
-        order.setCustomerPhoneNumber(request.getPhoneNumber());
+        var order = Order.fromCart(cart, customer, addressSnapshot, BigDecimal.valueOf(rate.costIdr()), vatRate, request.getEmail(), request.getPhoneNumber());
 
         List<Long> productIds = cart.getItems().stream()
                 .map(item -> item.getProduct().getId())
@@ -139,7 +120,7 @@ public class CheckoutService {
     }
 
     public void handleWebhookEvent(WebhookRequest request) {
-        log.info("✅ WebhookHandler triggered: {}", request);
+        log.info("WebhookHandler triggered: {}", request);
        paymentGateway.parseWebhookRequest(request).ifPresent(orderService::updatePaymentStatus);
     }
 }

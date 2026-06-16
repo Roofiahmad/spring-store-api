@@ -75,4 +75,9 @@ public class Cart {
     public Boolean isEmpty() {
         return items.isEmpty();
     }
+
+    public int calculateTotalWeight() {
+        return items.stream().mapToInt(item -> item.getProduct().getWeight()* item.getQuantity()).sum();
+    }
+
 }

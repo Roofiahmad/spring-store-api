@@ -2,6 +2,7 @@ package com.roofiahmad.springstoreapp.feature.order;
 
 import com.roofiahmad.springstoreapp.feature.address.dto.AddressDto;
 import com.roofiahmad.springstoreapp.feature.cart.Cart;
+import com.roofiahmad.springstoreapp.feature.order.event.OrderItemEvent;
 import com.roofiahmad.springstoreapp.feature.payment.PaymentStatus;
 import com.roofiahmad.springstoreapp.feature.user.entity.User;
 import jakarta.persistence.*;
@@ -72,7 +73,7 @@ public class Order {
     private LocalDateTime createdAt;
 
 
-    public static Order fromCart(Cart cart, User customer, AddressDto addressSnapshot, BigDecimal defaultShippingFee, BigDecimal vatRate) {
+    public static Order fromCart(Cart cart, User customer, AddressDto addressSnapshot, BigDecimal defaultShippingFee, BigDecimal vatRate, String customerEmail, String customerPhoneNumber) {
         BigDecimal subTotal = cart.getSubTotal();
         BigDecimal calculatedVat = subTotal.multiply(vatRate);
         BigDecimal finalTotalPrice = subTotal.add(defaultShippingFee).add(calculatedVat);
@@ -85,6 +86,8 @@ public class Order {
         order.setVatAmount(calculatedVat);
         order.setShippingAddressSnapshot(addressSnapshot);
         order.setTotalPrice(finalTotalPrice);
+        order.setCustomerEmail(customerEmail);
+        order.setCustomerPhoneNumber(customerPhoneNumber);
 
         cart.getItems().forEach(item -> {
             var orderItem = new OrderItem(order, item.getProduct(), item.getQuantity());
@@ -103,6 +106,16 @@ public class Order {
 
         OrderStatusHistory historyEntry = new OrderStatusHistory(this, newStatus, trackingNotes);
         this.statusHistory.add(historyEntry);
+    }
+
+    public List<OrderItemEvent> toOrderItemsEvent() {
+        return items.stream()
+                .map(item -> new OrderItemEvent(
+                        item.getProduct().getName(),
+                        item.getQuantity(),
+                        item.getUnitPrice()
+                ))
+                .toList();
     }
 
 }

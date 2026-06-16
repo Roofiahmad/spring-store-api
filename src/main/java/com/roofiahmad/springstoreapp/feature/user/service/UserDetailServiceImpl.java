@@ -12,7 +12,7 @@ import java.util.Collections;
 
 @AllArgsConstructor
 @Service
-public class UserServiceImpl implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override

@@ -72,21 +72,9 @@ public class CartService {
             shippingAddress = addressService.getCustomerMainAddress();
         }
 
-        int productTotalWeight = cart.getItems().stream()
-                .mapToInt(item -> item.getProduct().getWeight() * item.getQuantity())
-                .sum();
+        int productTotalWeight = cart.calculateTotalWeight();
 
-        List<ItemRequest> items = cart.getItems().stream().map((cartItem)->
-           new ItemRequest(
-                    cartItem.getProduct().getName(),
-                    cartItem.getProduct().getDescription(),
-                    cartItem.getProduct().getPrice().longValue(),
-                    cartItem.getProduct().getLength(),
-                    cartItem.getProduct().getWidth(),
-                    cartItem.getProduct().getHeight(),
-                    cartItem.getProduct().getWeight(),
-                    cartItem.getQuantity()
-                    )
+        List<ItemRequest> items = cart.getItems().stream().map(ItemRequest::new
         ).toList();
 
         ShippingQuery shippingQuery = new ShippingQuery(storePostalCode,Integer.parseInt(shippingAddress.getZip()),items, productTotalWeight);
